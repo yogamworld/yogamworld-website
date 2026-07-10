@@ -193,15 +193,14 @@ img {
 
 .btn-secondary {
     background-color: transparent;
-    color: var(--color-pure-white);
-    border-color: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(5px);
+    color: var(--color-sage-dark);
+    border-color: var(--color-sage);
 }
 
 .btn-secondary:hover {
-    background-color: var(--color-pure-white);
-    color: var(--color-text-dark);
-    border-color: var(--color-pure-white);
+    background-color: var(--color-sage);
+    color: var(--color-pure-white);
+    border-color: var(--color-sage);
 }
 
 .btn-large {
