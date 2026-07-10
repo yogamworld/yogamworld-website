@@ -228,10 +228,35 @@ img {
     box-shadow: 0 4px 20px rgba(91, 117, 98, 0.08);
 }
 
-/* Styling overrides for when the header is transparent (over the light/ambient hero section background) */
-.site-header:not(.scrolled) {
-    background-color: transparent;
-    box-shadow: none;
+/* Styling overrides for when the header is transparent (over the dark hero section background) */
+.site-header:not(.scrolled) .brand-name {
+    color: var(--color-pure-white);
+}
+
+.site-header:not(.scrolled) .brand-tagline {
+    color: var(--color-sage-light);
+    opacity: 0.9;
+}
+
+.site-header:not(.scrolled) .mobile-toggle:not(.active) .bar {
+    background-color: var(--color-pure-white);
+}
+
+@media (min-width: 769px) {
+    .site-header:not(.scrolled) .nav-link {
+        color: var(--color-pure-white);
+        opacity: 0.85;
+    }
+    
+    .site-header:not(.scrolled) .nav-link:hover,
+    .site-header:not(.scrolled) .nav-link.active {
+        color: var(--color-pure-white);
+        opacity: 1;
+    }
+    
+    .site-header:not(.scrolled) .nav-link::after {
+        background-color: var(--color-pure-white);
+    }
 }
 
 .header-container {
@@ -375,12 +400,23 @@ img {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: radial-gradient(circle at 10% 20%, rgba(227, 233, 229, 0.4) 0%, transparent 45%),
-                radial-gradient(circle at 90% 80%, rgba(244, 241, 230, 0.7) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(240, 243, 241, 0.5) 0%, transparent 70%),
-                linear-gradient(135deg, #FAF9F6 0%, #EBF0EC 100%);
     padding-top: var(--header-height);
     overflow: hidden;
+}
+
+/* Mirrored background image to place Durga on the right, keeping text area clean */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    transform: scaleX(-1);
+    z-index: 0;
 }
 
 .hero-overlay {
@@ -389,8 +425,8 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Soft overlay to tie elements and maintain contrast */
-    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.4), transparent 60%);
+    /* Gradient overlay to ensure text contrast on the left and full photo transparency on the right */
+    background: linear-gradient(to right, rgba(44, 53, 49, 0.8) 20%, rgba(44, 53, 49, 0.45) 60%, rgba(44, 53, 49, 0.15) 100%);
     z-index: 1;
 }
 
@@ -406,71 +442,31 @@ img {
     max-width: 650px;
 }
 
-/* Subtle, organic blurred glow layers in the background */
-.hero-section::before,
-.hero-section::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.85;
-}
-
-.hero-section::before {
-    width: 450px;
-    height: 450px;
-    background-color: rgba(122, 154, 130, 0.15); /* Sage green glow */
-    top: -10%;
-    left: -10%;
-}
-
-.hero-section::after {
-    width: 600px;
-    height: 600px;
-    background-color: rgba(195, 141, 117, 0.12); /* Warm earthy glow */
-    bottom: -15%;
-    right: -10%;
-}
-
-@media (min-width: 992px) {
-    .hero-container {
-        display: flex;
-        justify-content: flex-start;
-    }
-    .hero-content {
-        max-width: 650px;
-    }
-    .hero-overlay {
-        background: none;
-    }
-}
-
 .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--color-sage-light);
-    border: 1px solid var(--color-sage-light);
-    color: var(--color-sage-dark);
+    background-color: rgba(235, 240, 236, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: var(--color-pure-white);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 24px;
+    backdrop-filter: blur(5px);
 }
 
 .hero-title {
     font-size: 3.5rem;
-    color: var(--color-text-dark);
+    color: var(--color-pure-white);
     margin-bottom: 20px;
     letter-spacing: -0.5px;
 }
 
 .hero-subtitle {
     font-size: 1.15rem;
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.85);
     margin-bottom: 40px;
     line-height: 1.7;
 }
@@ -482,14 +478,16 @@ img {
 }
 
 .hero-actions .btn-secondary {
-    color: var(--color-text-dark);
-    border-color: var(--color-sage-dark);
+    background-color: transparent;
+    color: var(--color-pure-white);
+    border-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(5px);
 }
 
 .hero-actions .btn-secondary:hover {
-    background-color: var(--color-sage-dark);
-    color: var(--color-pure-white);
-    border-color: var(--color-sage-dark);
+    background-color: var(--color-pure-white);
+    color: var(--color-text-dark);
+    border-color: var(--color-pure-white);
 }
 
 /* Curve layout divider */
