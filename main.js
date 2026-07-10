@@ -8,8 +8,11 @@ const WORKSHOP_CONFIG = {
     // Live Google Registration Form Link
     GOOGLE_FORM_URL: "https://forms.gle/77dP3BJdCtccigUu5",
     
-    // Stripe Payment Link
+    // Stripe Payment Link (Full 21-Day Workshop)
     STRIPE_PAYMENT_URL: "https://buy.stripe.com/5kQ14pgevfGXfUB3PvaEE00",
+    
+    // Stripe Payment Link (1-Day Single Session)
+    STRIPE_SINGLE_SESSION_URL: "https://buy.stripe.com/14AbJ33rJ0M3cIp5XDaEE01",
     
     // Offline Payment details
     zelleEmail: "yogam.world@gmail.com",
@@ -76,6 +79,16 @@ function initConfiguration() {
     stripeLinks.forEach(link => {
         if (WORKSHOP_CONFIG.STRIPE_PAYMENT_URL) {
             link.setAttribute("href", WORKSHOP_CONFIG.STRIPE_PAYMENT_URL);
+        } else {
+            link.setAttribute("href", "#");
+        }
+    });
+
+    // 1d. Inject Single Session Stripe Links to all buttons with class "btn-single-session-link"
+    const singleSessionLinks = document.querySelectorAll(".btn-single-session-link");
+    singleSessionLinks.forEach(link => {
+        if (WORKSHOP_CONFIG.STRIPE_SINGLE_SESSION_URL) {
+            link.setAttribute("href", WORKSHOP_CONFIG.STRIPE_SINGLE_SESSION_URL);
         } else {
             link.setAttribute("href", "#");
         }
