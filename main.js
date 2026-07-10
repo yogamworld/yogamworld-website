@@ -8,11 +8,19 @@ const WORKSHOP_CONFIG = {
     // Live Google Registration Form Link
     GOOGLE_FORM_URL: "https://forms.gle/77dP3BJdCtccigUu5",
     
+    // Stripe Payment Link
+    STRIPE_PAYMENT_URL: "https://buy.stripe.com/5kQ14pgevfGXfUB3PvaEE00",
+    
+    // Offline Payment details
+    zelleEmail: "yogam.world@gmail.com",
+    contactPhone: "+1 804-516-8515",
+    contactPhoneRaw: "+18045168515",
+    
     // Social Media Links
     instagramUrl: "https://instagram.com/yogamworld",
     youtubeUrl: "https://youtube.com/c/yogamworld",
     facebookUrl: "https://facebook.com/yogamworld",
-    whatsappUrl: "https://wa.me/1234567890?text=I%20am%20interested%20in%20the%2021-Day%20Yoga%20Workshop", // URL encoded message
+    whatsappUrl: "https://wa.me/18045168515?text=I%20am%20interested%20in%20the%2021-Day%20Yoga%20Workshop", // URL encoded message
     
     // General Workshop Variables
     timingText: "6:00 AM - 7:00 AM EST",
@@ -24,6 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Initialize all custom variables
     initConfiguration();
+    
+    // Initialize payment toggle logic
+    initPayments();
     
     // Navigation Interactivity
     initNavigation();
@@ -57,6 +68,25 @@ function initConfiguration() {
                 e.preventDefault();
                 alert("Registration Form URL is coming soon. Please check back later!");
             });
+        }
+    });
+
+    // 1b. Inject Stripe Links to all buttons with class "btn-stripe-link"
+    const stripeLinks = document.querySelectorAll(".btn-stripe-link");
+    stripeLinks.forEach(link => {
+        if (WORKSHOP_CONFIG.STRIPE_PAYMENT_URL) {
+            link.setAttribute("href", WORKSHOP_CONFIG.STRIPE_PAYMENT_URL);
+        } else {
+            link.setAttribute("href", "#");
+        }
+    });
+
+    // 1c. Inject Contact phone links and text
+    const phoneLinks = document.querySelectorAll(".config-text-phone");
+    phoneLinks.forEach(link => {
+        link.textContent = WORKSHOP_CONFIG.contactPhone;
+        if (link.tagName === "A") {
+            link.setAttribute("href", `tel:${WORKSHOP_CONFIG.contactPhoneRaw}`);
         }
     });
 
@@ -109,6 +139,45 @@ function initConfiguration() {
     if (googleFormIframe && iframeContainer) {
         googleFormIframe.src = WORKSHOP_CONFIG.GOOGLE_FORM_URL;
         iframeContainer.style.display = "block";
+    }
+}
+
+/**
+ * Handles toggling and height animation of the Zelle/Offline payment drawer
+ */
+function initPayments() {
+    const toggleOfflineBtn = document.getElementById("toggle-offline-btn");
+    const offlineDrawer = document.getElementById("offline-payment-drawer");
+    
+    if (toggleOfflineBtn && offlineDrawer) {
+        toggleOfflineBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const isOpen = offlineDrawer.classList.contains("open");
+            
+            if (isOpen) {
+                offlineDrawer.style.maxHeight = "0px";
+                offlineDrawer.classList.remove("open");
+                toggleOfflineBtn.classList.remove("active");
+                // Restore icon to down arrow
+                const icon = toggleOfflineBtn.querySelector("i");
+                if (icon) {
+                    icon.className = "fa-solid fa-chevron-down";
+                }
+            } else {
+                offlineDrawer.style.maxHeight = offlineDrawer.scrollHeight + 40 + "px"; // add padding buffer
+                offlineDrawer.classList.add("open");
+                toggleOfflineBtn.classList.add("active");
+                // Change icon to up arrow
+                const icon = toggleOfflineBtn.querySelector("i");
+                if (icon) {
+                    icon.className = "fa-solid fa-chevron-up";
+                }
+                // Scroll down slightly to display the drawer
+                setTimeout(() => {
+                    offlineDrawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                }, 150);
+            }
+        });
     }
 }
 

@@ -1080,9 +1080,123 @@ img {
     width: 100%;
 }
 
-.form-helper-text {
+/* Registration buttons layout */
+.registration-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+#toggle-offline-btn {
+    border-color: var(--color-sage-light);
+    color: var(--color-text-dark);
+    background-color: var(--color-sage-pale);
+}
+
+#toggle-offline-btn:hover,
+#toggle-offline-btn.active {
+    background-color: var(--color-sage-light);
+    color: var(--color-sage-dark);
+    border-color: var(--color-sage-light);
+}
+
+#toggle-offline-btn i {
     font-size: 0.8rem;
-    margin-top: 14px;
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+/* Offline Drawer Styling */
+.offline-payment-drawer {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border-top: 1px dashed var(--color-border);
+    text-align: left;
+}
+
+.drawer-content {
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.payment-method-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.method-icon {
+    font-size: 1.25rem;
+    color: var(--color-earth);
+    background-color: var(--color-earth-light);
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.method-info h4 {
+    font-size: 1rem;
+    color: var(--color-text-dark);
+    margin-bottom: 4px;
+    font-family: var(--font-body);
+    font-weight: 700;
+}
+
+.method-info p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+}
+
+.user-selectable {
+    user-select: all;
+    background-color: var(--color-sage-light);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.95rem;
+    color: var(--color-text-dark);
+}
+
+.drawer-actions {
+    background-color: var(--color-sage-pale);
+    padding: 20px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+    margin-top: 10px;
+}
+
+.drawer-instructions {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 12px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.payment-support {
+    text-align: center;
+    padding-top: 12px;
+    border-top: 1px dashed var(--color-border);
+}
+
+.payment-support p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.payment-support a {
+    font-weight: 700;
+    color: var(--color-sage-dark);
+    text-decoration: underline;
 }
 
 /* Iframe container */

@@ -510,36 +510,59 @@
             <div class="container">
                 <div class="registration-wrapper rounded-card shadow-soft scroll-animate">
                     <div class="registration-content">
-                        <span class="badge-accent"><i class="fa-solid fa-ticket"></i> Limited Seats Available</span>
+                        <span class="badge-accent"><i class="fa-solid fa-ticket"></i> Registration Open</span>
                         <h2 class="reg-title">Ready to Begin Your 21-Day Yoga Journey?</h2>
-                        <p class="reg-desc">Take the first step toward a healthier, stronger, and more balanced life. Fill out our simple Google Form to secure your place in the upcoming live workshop batch.</p>
+                        <p class="reg-desc">Secure your place in the upcoming live workshop batch. Pay securely via card through Stripe, or choose Zelle / offline options.</p>
                         
                         <!-- Main Action Card -->
                         <div class="registration-action-card">
                             <div class="reg-price-block">
-                                <span class="price-label">Live Workshop Batch</span>
-                                <span class="price-value">6:00 AM - 7:00 AM EST</span>
+                                <span class="price-label">Workshop Registration Fee</span>
+                                <span class="price-value">$75.00 USD</span>
                                 <span class="price-details"><i class="fa-solid fa-circle-check"></i> Includes personal alignment audits and session recordings access</span>
                             </div>
                             
-                            <a href="#" target="_blank" class="btn btn-primary btn-large btn-register-link" id="main-register-btn">
-                                Reserve Your Seat Today <i class="fa-solid fa-circle-chevron-right"></i>
-                            </a>
+                            <div class="registration-buttons">
+                                <a href="#" target="_blank" class="btn btn-primary btn-large btn-stripe-link" id="main-stripe-btn">
+                                    Pay & Register with Card <i class="fa-solid fa-credit-card"></i>
+                                </a>
+                                
+                                <button class="btn btn-secondary btn-large" id="toggle-offline-btn">
+                                    Pay via Zelle / Cash <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+                            </div>
                             
-                            <p class="form-helper-text">You will be redirected to our secure Google Registration Form</p>
+                            <!-- Collapsible Drawer for Offline details -->
+                            <div class="offline-payment-drawer" id="offline-payment-drawer">
+                                <div class="drawer-content">
+                                    <div class="payment-method-item">
+                                        <span class="method-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
+                                        <div class="method-info">
+                                            <h4>Zelle Transfer</h4>
+                                            <p>Send <strong>$75</strong> via Zelle to: <strong class="user-selectable">yogam.world@gmail.com</strong></p>
+                                        </div>
+                                    </div>
+                                    <div class="payment-method-item">
+                                        <span class="method-icon"><i class="fa-solid fa-money-bill-wave"></i></span>
+                                        <div class="method-info">
+                                            <h4>Cash or Bank Transfer</h4>
+                                            <p>Details will be provided immediately after submitting the registration form below.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="drawer-actions">
+                                        <p class="drawer-instructions">Once payment is made (or to register for offline payment), fill out the details form:</p>
+                                        <a href="#" target="_blank" class="btn btn-primary btn-register-link">
+                                            Complete Registration Form <i class="fa-solid fa-file-signature"></i>
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="payment-support">
+                                        <p>For questions or support, text/call us at: <a href="tel:+18045168515" class="config-text-phone">+1 804-516-8515</a></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <!-- GOOGLE FORM IFRAME PLACEHOLDER
-                        If you prefer to embed the form directly instead of opening it in a new tab:
-                        1. Uncomment the div block below.
-                        2. The javascript in main.js will automatically populate the iframe src from WORKSHOP_CONFIG.GOOGLE_FORM_URL.
-                        3. Hide or delete the "registration-action-card" block above.
-                        -->
-                        <!--
-                        <div class="iframe-container" id="iframe-reg-container" style="display: none;">
-                            <iframe id="google-form-iframe" src="" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading registration form...</iframe>
-                        </div>
-                        -->
                     </div>
                 </div>
             </div>
@@ -631,7 +654,7 @@
                 <div class="final-cta-content scroll-animate">
                     <h2 class="final-cta-title">Your Wellness Journey Starts Today</h2>
                     <p class="final-cta-text">Join Yogam World’s 21-Day Yoga Workshop and experience the transformation through daily yoga practice. Reconnect with physical ease and mental tranquility.</p>
-                    <a href="#" target="_blank" class="btn btn-primary btn-large btn-register-link">Reserve Your Seat Today <i class="fa-solid fa-arrow-right-long"></i></a>
+                    <a href="#register" class="btn btn-primary btn-large cta-register-trigger">Reserve Your Seat Today <i class="fa-solid fa-arrow-right-long"></i></a>
                 </div>
             </div>
         </section>
@@ -671,6 +694,7 @@
                 </div>
                 <div class="footer-contact-info">
                     <p><i class="fa-regular fa-envelope"></i> contact@yogamworld.com</p>
+                    <p><i class="fa-solid fa-phone"></i> <a href="tel:+18045168515" class="config-text-phone">+1 804-516-8515</a></p>
                 </div>
             </div>
         </div>
