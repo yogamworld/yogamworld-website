@@ -414,7 +414,7 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(44, 53, 49, 0.7) 30%, rgba(44, 53, 49, 0.4) 100%);
+    background: linear-gradient(to right, rgba(44, 53, 49, 0.75) 30%, rgba(44, 53, 49, 0.4) 100%);
     z-index: 1;
 }
 
@@ -423,10 +423,27 @@ img {
     z-index: 2;
     padding-top: 40px;
     padding-bottom: 80px;
+    width: 100%;
 }
 
 .hero-content {
     max-width: 650px;
+}
+
+@media (min-width: 992px) {
+    .hero-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .hero-content {
+        max-width: 580px;
+    }
+    .hero-overlay {
+        background: linear-gradient(to left, rgba(44, 53, 49, 0.85) 40%, rgba(44, 53, 49, 0.15) 100%);
+    }
+    .hero-section {
+        background-position: 15% center;
+    }
 }
 
 .hero-badge {
