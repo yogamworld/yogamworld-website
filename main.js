@@ -12,7 +12,7 @@ const WORKSHOP_CONFIG = {
     STRIPE_PAYMENT_URL: "https://buy.stripe.com/5kQ14pgevfGXfUB3PvaEE00",
     
     // Stripe Payment Link (1-Day Single Session)
-    STRIPE_SINGLE_SESSION_URL: "https://buy.stripe.com/14AbJ33rJ0M3cIp5XDaEE01",
+    STRIPE_SINGLE_SESSION_URL: "https://buy.stripe.com/14A9AVaUbcuL7o5gChaEE02",
     
     // Offline Payment details
     zelleEmail: "yogam.world@gmail.com",
