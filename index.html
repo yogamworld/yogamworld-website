@@ -409,6 +409,7 @@
                             <div class="details-class-meta">
                                 <span><i class="fa-regular fa-clock"></i> 6:00 AM - 7:00 AM EST</span>
                                 <span><i class="fa-solid fa-video"></i> Live Online</span>
+                                <span><i class="fa-solid fa-tag"></i> $15.00 / session</span>
                             </div>
                             <a href="#" target="_blank" class="btn btn-primary btn-single-session-link">Book This Session <i class="fa-solid fa-ticket"></i></a>
                         </div>
@@ -512,23 +513,46 @@
                     <div class="registration-content">
                         <span class="badge-accent"><i class="fa-solid fa-ticket"></i> Registration Open</span>
                         <h2 class="reg-title">Ready to Begin Your 21-Day Yoga Journey?</h2>
-                        <p class="reg-desc">Secure your place in the upcoming live workshop batch. Pay securely via card through Stripe, or choose Zelle / offline options. <br><span style="font-size: 0.95rem; opacity: 0.85;">(Single 1-day sessions are also available for $1.00 via the calendar schedule below.)</span></p>
+                        <p class="reg-desc">Secure your place in the upcoming live workshop batch. Pay securely via card through Stripe, or choose Zelle / offline options. <br><span style="font-size: 0.95rem; opacity: 0.85;">(Single 1-day sessions are also available for $15.00 via the calendar schedule below.)</span></p>
                         
                         <!-- Main Action Card -->
-                        <div class="registration-action-card">
-                            <div class="reg-price-block">
-                                <span class="price-label">Workshop Registration Fee</span>
-                                <span class="price-value">$75.00 USD</span>
-                                <span class="price-details"><i class="fa-solid fa-circle-check"></i> Includes personal alignment audits and session recordings access</span>
+                        <div class="registration-action-card pricing-portal-card">
+                            <div class="reg-pricing-columns">
+                                <!-- Single Session Option -->
+                                <div class="price-column-item">
+                                    <span class="price-badge">1-Class Pass</span>
+                                    <h3 class="price-item-title">Single Session</h3>
+                                    <div class="price-item-value">
+                                        <span class="price-currency">$</span>
+                                        <span class="price-amount">15</span>
+                                        <span class="price-period">/ session</span>
+                                    </div>
+                                    <p class="price-item-desc">Perfect to test the waters and experience a live guided yoga & breathing class.</p>
+                                    <a href="#" target="_blank" class="btn btn-secondary btn-large btn-single-session-link">
+                                        Book Single Session <i class="fa-solid fa-ticket"></i>
+                                    </a>
+                                </div>
+                                
+                                <!-- 21-Day Package Option -->
+                                <div class="price-column-item popular">
+                                    <span class="price-badge highlight">Best Value</span>
+                                    <h3 class="price-item-title">21-Day Package</h3>
+                                    <div class="price-item-value">
+                                        <span class="price-currency">$</span>
+                                        <span class="price-amount">75</span>
+                                        <span class="price-period">/ full path</span>
+                                    </div>
+                                    <p class="price-item-desc">Complete access to the progressive curriculum, habit building, and alignments feedback.</p>
+                                    <a href="#" target="_blank" class="btn btn-primary btn-large btn-stripe-link">
+                                        Book 21-Day Path <i class="fa-solid fa-credit-card"></i>
+                                    </a>
+                                </div>
                             </div>
                             
-                            <div class="registration-buttons">
-                                <a href="#" target="_blank" class="btn btn-primary btn-large btn-stripe-link" id="main-stripe-btn">
-                                    Pay & Register with Card <i class="fa-solid fa-credit-card"></i>
-                                </a>
-                                
+                            <!-- Toggle Offline Option -->
+                            <div class="offline-toggle-container">
                                 <button class="btn btn-secondary btn-large" id="toggle-offline-btn">
-                                    Pay via Zelle / Cash <i class="fa-solid fa-chevron-down"></i>
+                                    Pay via Zelle / Cash / Transfer <i class="fa-solid fa-chevron-down"></i>
                                 </button>
                             </div>
                             
@@ -539,7 +563,7 @@
                                         <span class="method-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
                                         <div class="method-info">
                                             <h4>Zelle Transfer</h4>
-                                            <p>Send <strong>$75</strong> via Zelle to: <strong class="user-selectable">yogam.world@gmail.com</strong></p>
+                                            <p>Send payment (<strong>$75</strong> for full package or <strong>$15</strong> for single session) to: <strong class="user-selectable">yogam.world@gmail.com</strong></p>
                                         </div>
                                     </div>
                                     <div class="payment-method-item">
