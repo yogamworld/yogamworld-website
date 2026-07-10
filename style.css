@@ -688,56 +688,6 @@ img {
     line-height: 1.5;
 }
 
-/* --- Why Join / Benefits Section --- */
-.benefits-section {
-    background-color: var(--color-beige);
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-}
-
-.benefit-card {
-    background-color: var(--color-pure-white);
-    padding: 32px;
-    border: 1px solid var(--color-border);
-}
-
-.benefit-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--color-sage-light);
-}
-
-.benefit-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-.benefit-icon {
-    font-size: 1.25rem;
-    color: var(--color-sage-dark);
-    background-color: var(--color-sage-light);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.benefit-card h3 {
-    font-size: 1.25rem;
-}
-
-.benefit-card p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
 
 /* --- Progressive Learning Path / Timeline --- */
 .learning-section {
