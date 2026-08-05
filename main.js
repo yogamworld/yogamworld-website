@@ -331,6 +331,16 @@ function initTestimonialSlider() {
     let autoPlayTimer = null;
     const autoPlayInterval = 6000; // 6 seconds auto-rotate
 
+    // Generate dots dynamically to match actual slide count
+    if (dotsContainer) {
+        dotsContainer.innerHTML = "";
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement("span");
+            dot.className = "dot" + (i === 0 ? " active" : "");
+            dotsContainer.appendChild(dot);
+        }
+    }
+
     if (totalSlides <= 1) {
         if (prevBtn) prevBtn.style.display = "none";
         if (nextBtn) nextBtn.style.display = "none";

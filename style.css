@@ -957,6 +957,21 @@ img {
     border: 2px solid var(--color-sage);
 }
 
+.student-initials-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--color-sage-light);
+    color: var(--color-sage-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.15rem;
+    border: 2px solid var(--color-sage);
+    flex-shrink: 0;
+}
+
 .student-name {
     font-size: 1.1rem;
     color: var(--color-text-dark);
