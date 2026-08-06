@@ -6,7 +6,7 @@
 // Easily update these values to change the live registration URL, timing, dates, and contacts.
 const WORKSHOP_CONFIG = {
     // Live Google Registration Form Link
-    GOOGLE_FORM_URL: "https://forms.gle/77dP3BJdCtccigUu5",
+    GOOGLE_FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLSem65n_cRAdejsrYFIoJuiABc7cGRs4qd6qLS7nE7E7nw5FwA/viewform",
     
     // Stripe Payment Link (Full 21-Day Workshop)
     STRIPE_PAYMENT_URL: "https://buy.stripe.com/5kQ14pgevfGXfUB3PvaEE00",
@@ -20,24 +20,152 @@ const WORKSHOP_CONFIG = {
     contactPhoneRaw: "+18045168515",
     
     // Social Media Links
-    instagramUrl: "https://instagram.com/yogamworld",
-    youtubeUrl: "https://youtube.com/c/yogamworld",
-    facebookUrl: "https://facebook.com/yogamworld",
-    whatsappUrl: "https://wa.me/18045168515?text=I%20am%20interested%20in%20the%2021-Day%20Yoga%20Workshop", // URL encoded message
+    instagramUrl: "https://www.instagram.com/yogam.world/",
+    youtubeUrl: "https://www.youtube.com/@yogam_world",
+    facebookUrl: "https://www.facebook.com/DurgaDevi.Yogam",
+    whatsappUrl: "https://chat.whatsapp.com/Efxpkub1eLLBC4aKQnhTdJ?mode=gi_t",
+    whatsappSocialUrl: "https://wa.me/18045168515",
     
     // General Workshop Variables
     timingText: "6:00 AM - 7:00 AM EST",
-    startDateText: "July 11, 2026",
-    startDateVal: "2026-07-11" // Format: YYYY-MM-DD (This controls the calendar highlighted range)
+    
+    // Recurring & Deadline Settings
+    // Registration closes this many days before the workshop begins (default: 1 day before, e.g. Sunday)
+    REGISTRATION_CLOSE_DAYS_BEFORE: 1,
+    
+    // Set to true to manually force close registration for all batches
+    REGISTRATION_FORCE_CLOSED: false,
+    
+    // Optional static ISO string override to set a custom deadline (e.g. "2026-09-05T23:59:59")
+    REGISTRATION_DEADLINE_OVERRIDE: null
 };
 
+// Global active workshop program state
+let currentWorkshop = null;
+
+// --- Helper Functions for Recurring Dates & Deadlines ---
+
+/**
+ * Returns the first Monday of a given year and month (0-indexed)
+ */
+function getFirstMonday(year, month) {
+    let date = new Date(year, month, 1);
+    while (date.getDay() !== 1) { // 1 = Monday
+        date.setDate(date.getDate() + 1);
+    }
+    return date;
+}
+
+/**
+ * Formats a Date object as a long readable date (e.g. "Sunday, September 6, 2026")
+ */
+function formatDateLong(date) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+/**
+ * Formats a date range beautifully (e.g. "Sept 7 – 27, 2026")
+ */
+function formatDateRange(start, end) {
+    const startMonth = start.toLocaleDateString('en-US', { month: 'short' });
+    const startDay = start.getDate();
+    const startYear = start.getFullYear();
+    
+    const endMonth = end.toLocaleDateString('en-US', { month: 'short' });
+    const endDay = end.getDate();
+    const endYear = end.getFullYear();
+    
+    if (startYear !== endYear) {
+        return `${startMonth} ${startDay}, ${startYear} – ${endMonth} ${endDay}, ${endYear}`;
+    }
+    if (startMonth !== endMonth) {
+        return `${startMonth} ${startDay} – ${endMonth} ${endDay}, ${startYear}`;
+    }
+    return `${startMonth} ${startDay} – ${endDay}, ${startYear}`;
+}
+
+/**
+ * Calculates the active/upcoming workshop details based on the current date
+ */
+function getWorkshopDetails(now) {
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    
+    // Calculate first Monday of current month
+    let firstMondayCurrent = getFirstMonday(currentYear, currentMonth);
+    let deadlineDays = WORKSHOP_CONFIG.REGISTRATION_CLOSE_DAYS_BEFORE || 0;
+    
+    let deadlineCurrent = new Date(firstMondayCurrent.getTime());
+    deadlineCurrent.setDate(deadlineCurrent.getDate() - deadlineDays);
+    deadlineCurrent.setHours(23, 59, 59, 999);
+    
+    let activeStart, activeDeadline, status = "open";
+    
+    // Check if we have a static deadline override
+    if (WORKSHOP_CONFIG.REGISTRATION_DEADLINE_OVERRIDE) {
+        let overrideDate = new Date(WORKSHOP_CONFIG.REGISTRATION_DEADLINE_OVERRIDE);
+        if (!isNaN(overrideDate.getTime())) {
+            if (now > overrideDate) {
+                // Override has passed, roll over to the next month
+                let nextMonth = currentMonth + 1;
+                let nextYear = currentYear;
+                if (nextMonth > 11) {
+                    nextMonth = 0;
+                    nextYear++;
+                }
+                activeStart = getFirstMonday(nextYear, nextMonth);
+                activeDeadline = new Date(activeStart.getTime());
+                activeDeadline.setDate(activeDeadline.getDate() - deadlineDays);
+                activeDeadline.setHours(23, 59, 59, 999);
+            } else {
+                activeStart = firstMondayCurrent;
+                activeDeadline = overrideDate;
+            }
+        }
+    } else {
+        // Standard dynamic calculation
+        if (now <= deadlineCurrent) {
+            // Registration for current month is open
+            activeStart = firstMondayCurrent;
+            activeDeadline = deadlineCurrent;
+        } else {
+            // Roll over to next month
+            let nextMonth = currentMonth + 1;
+            let nextYear = currentYear;
+            if (nextMonth > 11) {
+                nextMonth = 0;
+                nextYear++;
+            }
+            activeStart = getFirstMonday(nextYear, nextMonth);
+            activeDeadline = new Date(activeStart.getTime());
+            activeDeadline.setDate(activeDeadline.getDate() - deadlineDays);
+            activeDeadline.setHours(23, 59, 59, 999);
+        }
+    }
+    
+    // End date is 20 days after start date (21 consecutive days total)
+    let activeEnd = new Date(activeStart.getTime());
+    activeEnd.setDate(activeStart.getDate() + 20);
+    
+    return {
+        startDate: activeStart,
+        endDate: activeEnd,
+        deadline: activeDeadline,
+        status: status
+    };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    // Determine active workshop details
+    let now = new Date();
+    currentWorkshop = getWorkshopDetails(now);
     
     // Initialize all custom variables
     initConfiguration();
     
-    // Initialize payment toggle logic
-    initPayments();
+    // Initialize simplified checkout widget logic
+    initCheckoutWidget();
     
     // Navigation Interactivity
     initNavigation();
@@ -51,6 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Interactive 21-Day Calendar
     initCalendar();
     
+    // Dynamically calculate upcoming batch list
+    initUpcomingBatches();
+    
     // Scroll-triggered Fade/Slide Animations
     initScrollAnimations();
 });
@@ -59,11 +190,22 @@ document.addEventListener("DOMContentLoaded", () => {
  * Injects the configuration variables into their respective places in the HTML
  */
 function initConfiguration() {
+    // Determine status of active workshop
+    const isClosed = WORKSHOP_CONFIG.REGISTRATION_FORCE_CLOSED || currentWorkshop.status === "closed";
+
     // 1. Inject Registration Links to all buttons with class "btn-register-link"
     const registerLinks = document.querySelectorAll(".btn-register-link");
     registerLinks.forEach(link => {
-        if (WORKSHOP_CONFIG.GOOGLE_FORM_URL) {
+        if (isClosed) {
+            link.setAttribute("href", "#");
+            link.classList.add("disabled");
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Registration is currently closed for this workshop batch.");
+            });
+        } else if (WORKSHOP_CONFIG.GOOGLE_FORM_URL) {
             link.setAttribute("href", WORKSHOP_CONFIG.GOOGLE_FORM_URL);
+            link.classList.remove("disabled");
         } else {
             // Safe fallback if URL is empty
             link.setAttribute("href", "#");
@@ -74,25 +216,7 @@ function initConfiguration() {
         }
     });
 
-    // 1b. Inject Stripe Links to all buttons with class "btn-stripe-link"
-    const stripeLinks = document.querySelectorAll(".btn-stripe-link");
-    stripeLinks.forEach(link => {
-        if (WORKSHOP_CONFIG.STRIPE_PAYMENT_URL) {
-            link.setAttribute("href", WORKSHOP_CONFIG.STRIPE_PAYMENT_URL);
-        } else {
-            link.setAttribute("href", "#");
-        }
-    });
 
-    // 1d. Inject Single Session Stripe Links to all buttons with class "btn-single-session-link"
-    const singleSessionLinks = document.querySelectorAll(".btn-single-session-link");
-    singleSessionLinks.forEach(link => {
-        if (WORKSHOP_CONFIG.STRIPE_SINGLE_SESSION_URL) {
-            link.setAttribute("href", WORKSHOP_CONFIG.STRIPE_SINGLE_SESSION_URL);
-        } else {
-            link.setAttribute("href", "#");
-        }
-    });
 
     // 1c. Inject Contact phone links and text
     const phoneLinks = document.querySelectorAll(".config-text-phone");
@@ -126,6 +250,32 @@ function initConfiguration() {
         el.textContent = WORKSHOP_CONFIG.timingText;
     });
 
+    // 2b. Inject Dynamic Workshop Package Variables
+    const datesRangeEl = document.getElementById("workshop-dates-range");
+    if (datesRangeEl) {
+        datesRangeEl.textContent = formatDateRange(currentWorkshop.startDate, currentWorkshop.endDate);
+    }
+    
+    const statusBadgeEl = document.getElementById("workshop-status-badge");
+    if (statusBadgeEl) {
+        if (isClosed) {
+            statusBadgeEl.textContent = "Registration Closed";
+            statusBadgeEl.className = "package-status-badge status-closed";
+        } else {
+            statusBadgeEl.textContent = "Registration Open";
+            statusBadgeEl.className = "package-status-badge status-open";
+        }
+    }
+    
+    const deadlineTextEl = document.getElementById("workshop-deadline-text");
+    if (deadlineTextEl) {
+        if (isClosed) {
+            deadlineTextEl.textContent = "Closed for this batch";
+        } else {
+            deadlineTextEl.textContent = formatDateLong(currentWorkshop.deadline);
+        }
+    }
+
     // 3. Inject social URLs
     const igLink = document.getElementById("social-instagram");
     if (igLink) igLink.setAttribute("href", WORKSHOP_CONFIG.instagramUrl);
@@ -137,7 +287,10 @@ function initConfiguration() {
     if (fbLink) fbLink.setAttribute("href", WORKSHOP_CONFIG.facebookUrl);
     
     const waLink = document.getElementById("social-whatsapp");
-    if (waLink) waLink.setAttribute("href", WORKSHOP_CONFIG.whatsappUrl);
+    if (waLink) waLink.setAttribute("href", WORKSHOP_CONFIG.whatsappSocialUrl);
+    
+    const waJoinLink = document.getElementById("social-whatsapp-join");
+    if (waJoinLink) waJoinLink.setAttribute("href", WORKSHOP_CONFIG.whatsappUrl);
 
     // 4. Update Copyright Year to current year dynamically
     const yearSpan = document.getElementById("copyright-year");
@@ -146,52 +299,105 @@ function initConfiguration() {
     }
 
     // 5. Iframe Embedding Option Handler
-    // If the user chooses to embed the form directly (Google Form iframe container is uncommented)
     const googleFormIframe = document.getElementById("google-form-iframe");
     const iframeContainer = document.getElementById("iframe-reg-container");
     if (googleFormIframe && iframeContainer) {
-        googleFormIframe.src = WORKSHOP_CONFIG.GOOGLE_FORM_URL;
-        iframeContainer.style.display = "block";
+        if (isClosed) {
+            iframeContainer.style.display = "none";
+        } else {
+            googleFormIframe.src = WORKSHOP_CONFIG.GOOGLE_FORM_URL;
+            iframeContainer.style.display = "block";
+        }
     }
 }
 
 /**
  * Handles toggling and height animation of the Zelle/Offline payment drawer
  */
-function initPayments() {
-    const toggleOfflineBtn = document.getElementById("toggle-offline-btn");
-    const offlineDrawer = document.getElementById("offline-payment-drawer");
+/**
+ * Handles the step-by-step interactive checkout widget
+ */
+function initCheckoutWidget() {
+    const programBoxes = document.querySelectorAll(".select-program-grid .select-box");
+    const paymentBoxes = document.querySelectorAll(".select-payment-grid .select-box");
     
-    if (toggleOfflineBtn && offlineDrawer) {
-        toggleOfflineBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            const isOpen = offlineDrawer.classList.contains("open");
-            
-            if (isOpen) {
-                offlineDrawer.style.maxHeight = "0px";
-                offlineDrawer.classList.remove("open");
-                toggleOfflineBtn.classList.remove("active");
-                // Restore icon to down arrow
-                const icon = toggleOfflineBtn.querySelector("i");
-                if (icon) {
-                    icon.className = "fa-solid fa-chevron-down";
-                }
+    const viewCard = document.getElementById("view-card");
+    const viewZelle = document.getElementById("view-zelle");
+    
+    const cardSummaryName = document.getElementById("card-summary-name");
+    const cardSummaryPrice = document.getElementById("card-summary-price");
+    const zelleSummaryPrice = document.getElementById("zelle-summary-price");
+    
+    const checkoutCardBtn = document.getElementById("checkout-card-btn");
+    
+    // State variables
+    let selectedProduct = "program"; // "program" or "session"
+    let selectedPrice = 75;
+    let selectedMethod = "card"; // "card" or "zelle"
+    
+    function updateCheckoutView() {
+        // Determine product names and prices
+        const productName = selectedProduct === "program" ? "21 Days Online Program" : "Individual Yoga Session";
+        
+        // Update summary text
+        if (cardSummaryName) cardSummaryName.textContent = productName;
+        if (cardSummaryPrice) cardSummaryPrice.textContent = `$${selectedPrice}`;
+        if (zelleSummaryPrice) zelleSummaryPrice.textContent = `$${selectedPrice}`;
+        
+        // Update Stripe Payment Link
+        if (checkoutCardBtn) {
+            const isClosed = WORKSHOP_CONFIG.REGISTRATION_FORCE_CLOSED || currentWorkshop.status === "closed";
+            if (isClosed) {
+                checkoutCardBtn.setAttribute("href", "#");
+                checkoutCardBtn.classList.add("disabled");
+                checkoutCardBtn.innerHTML = `Registration Closed <i class="fa-solid fa-lock"></i>`;
             } else {
-                offlineDrawer.style.maxHeight = offlineDrawer.scrollHeight + 40 + "px"; // add padding buffer
-                offlineDrawer.classList.add("open");
-                toggleOfflineBtn.classList.add("active");
-                // Change icon to up arrow
-                const icon = toggleOfflineBtn.querySelector("i");
-                if (icon) {
-                    icon.className = "fa-solid fa-chevron-up";
-                }
-                // Scroll down slightly to display the drawer
-                setTimeout(() => {
-                    offlineDrawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-                }, 150);
+                checkoutCardBtn.classList.remove("disabled");
+                const stripeUrl = selectedProduct === "program" 
+                    ? WORKSHOP_CONFIG.STRIPE_PAYMENT_URL 
+                    : WORKSHOP_CONFIG.STRIPE_SINGLE_SESSION_URL;
+                checkoutCardBtn.setAttribute("href", stripeUrl || "#");
+                checkoutCardBtn.innerHTML = `Pay Securely via Card <i class="fa-solid fa-credit-card"></i>`;
             }
-        });
+        }
+        
+        // Toggle Views in Step 3
+        if (selectedMethod === "card") {
+            if (viewCard) viewCard.classList.add("active");
+            if (viewZelle) viewZelle.classList.remove("active");
+        } else {
+            if (viewCard) viewCard.classList.remove("active");
+            if (viewZelle) viewZelle.classList.add("active");
+        }
     }
+    
+    // Bind Step 1 Product Clicks
+    programBoxes.forEach(box => {
+        box.addEventListener("click", () => {
+            programBoxes.forEach(b => b.classList.remove("active"));
+            box.classList.add("active");
+            
+            selectedProduct = box.getAttribute("data-product");
+            selectedPrice = parseInt(box.getAttribute("data-price"), 10);
+            
+            updateCheckoutView();
+        });
+    });
+    
+    // Bind Step 2 Payment Clicks
+    paymentBoxes.forEach(box => {
+        box.addEventListener("click", () => {
+            paymentBoxes.forEach(b => b.classList.remove("active"));
+            box.classList.add("active");
+            
+            selectedMethod = box.getAttribute("data-method");
+            
+            updateCheckoutView();
+        });
+    });
+    
+    // Run initial configuration update
+    updateCheckoutView();
 }
 
 /**
@@ -464,30 +670,6 @@ function initScrollAnimations() {
 /**
  * Curriculum topics for the 21-day workshop calendar details
  */
-const WORKSHOP_CURRICULUM = [
-    { day: 1, title: "Joint Mobility (Sukshma Vyayama)", focus: "Preparing joints, neck, shoulders, and wrists." },
-    { day: 2, title: "Ankle & Knee Stabilization", focus: "Building physical foundation, alignment, and balances." },
-    { day: 3, title: "Spinal Warming & Back Releases", focus: "Releasing muscle tension along the dorsal line." },
-    { day: 4, title: "Introduction to Breath Sync", focus: "Coordinating dynamic movement with breathing rhythms." },
-    { day: 5, title: "Core & Pelvic Floor Activation", focus: "Establishing internal structural stability." },
-    { day: 6, title: "Standing Postures for Stability", focus: "Tadasana, Vrikshasana, and Warrior series." },
-    { day: 7, title: "Spinal Realignment & Extensions", focus: "Opening chest cavity and relieving spinal compression." },
-    { day: 8, title: "Seated Twists for Detox", focus: "Gentle twists to aid digestion and stimulate abdominal organs." },
-    { day: 9, title: "Chest-Openers & Shoulder Opening", focus: "Improving respiratory capacity and chest mobility." },
-    { day: 10, title: "Prone Back-Strengtheners", focus: "Bhujangasana and Shalabhasana." },
-    { day: 11, title: "Balance & Proprioception Postures", focus: "Refining body alignment and balance in space." },
-    { day: 12, title: "Review of Physical Postures", focus: "Integration of foundational asanas into a single flow." },
-    { day: 13, title: "Abdominal & Diaphragmatic Breath", focus: "Unlocking deeper lung volume and calming the nerves." },
-    { day: 14, title: "Alternate Nostril Breathing", focus: "Nadi Shodhana for mental clarity and left-right brain balance." },
-    { day: 15, title: "Cooling & Calming Pranayama", focus: "Sheetali, Sheetkari, and Humming Bee (Brahmari) breathing." },
-    { day: 16, title: "Internal Cleanse (Kapalabhati)", focus: "Mild cleansing breath exercises for lung oxygenation." },
-    { day: 17, title: "Breath & Mind Connection Flow", focus: "Syncing breath holds with slow, mindful yoga transitions." },
-    { day: 18, title: "Mindfulness & Body Scan", focus: "Developing somatic sensory awareness and relaxing muscles." },
-    { day: 19, title: "Yoga Nidra (Deep Relaxation)", focus: "Restorative recovery for the nervous system and deep sleep." },
-    { day: 20, title: "Meditation & Visualizations", focus: "Cultivating appreciation, presence, and calm." },
-    { day: 21, title: "Integration & Sustainable Routine", focus: "Creating your personalized lifelong self-practice schedule." }
-];
-
 /**
  * Initializes and handles rendering logic for the 21-Day interactive schedule calendar
  */
@@ -498,26 +680,21 @@ function initCalendar() {
     const monthYearTitle = document.getElementById("calendar-month-year");
     const prevMonthBtn = document.getElementById("prev-month");
     const nextMonthBtn = document.getElementById("next-month");
-    
-    const detailsPlaceholder = document.getElementById("details-placeholder");
-    const detailsActiveContent = document.getElementById("details-active-content");
-    const detailsDayNum = document.getElementById("details-day-number");
-    const detailsDayTitle = document.getElementById("details-day-title");
-    const detailsDayFocus = document.getElementById("details-day-focus");
 
-    // Set calendar date context based on WORKSHOP_CONFIG.startDateVal
-    const startDate = new Date(WORKSHOP_CONFIG.startDateVal + "T00:00:00");
+    // Use the dynamic workshop start date computed globally as the initial month view
+    const startDate = currentWorkshop ? currentWorkshop.startDate : new Date();
     let currentViewDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-
-    // Calculate workshop dates range
-    const endDate = new Date(startDate.getTime());
-    endDate.setDate(startDate.getDate() + 20); // 21 days total (Start + 20)
 
     function renderCalendar() {
         calendarDaysGrid.innerHTML = "";
         
         const year = currentViewDate.getFullYear();
         const month = currentViewDate.getMonth();
+        
+        // Dynamically compute the first Monday of the currently viewed month
+        const viewStartDate = getFirstMonday(year, month);
+        const viewEndDate = new Date(viewStartDate.getTime());
+        viewEndDate.setDate(viewStartDate.getDate() + 20); // 21 days total
         
         // Month name & Year title
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -551,50 +728,17 @@ function initCalendar() {
                 dayEl.classList.add("today");
             }
             
+            // Check if this date is the batch start date (first Monday)
+            if (thisDayDate.toDateString() === viewStartDate.toDateString()) {
+                dayEl.classList.add("batch-start");
+            }
+            
             // Check if this date falls within the 21-day workshop window
-            if (thisDayDate >= startDate && thisDayDate <= endDate) {
+            if (thisDayDate >= viewStartDate && thisDayDate <= viewEndDate) {
                 dayEl.classList.add("active-range");
-                
-                // Calculate which day of the workshop this is (1-indexed)
-                const diffTime = Math.abs(thisDayDate - startDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Add 1 since start date is Day 1
-                dayEl.setAttribute("data-workshop-day", diffDays);
-                
-                // Add click behavior to show corresponding details
-                dayEl.addEventListener("click", () => {
-                    // Highlight selected day
-                    document.querySelectorAll(".calendar-days .day").forEach(el => {
-                        el.classList.remove("selected");
-                    });
-                    dayEl.classList.add("selected");
-                    
-                    // Populate details panel
-                    const curriculumIndex = diffDays - 1;
-                    if (curriculumIndex >= 0 && curriculumIndex < WORKSHOP_CURRICULUM.length) {
-                        const dayInfo = WORKSHOP_CURRICULUM[curriculumIndex];
-                        detailsPlaceholder.style.display = "none";
-                        detailsActiveContent.style.display = "flex";
-                        
-                        detailsDayNum.textContent = dayInfo.day;
-                        detailsDayTitle.textContent = dayInfo.title;
-                        detailsDayFocus.textContent = dayInfo.focus;
-                    }
-                });
             }
             
             calendarDaysGrid.appendChild(dayEl);
-        }
-
-        // Programmatically select Day 1 immediately if we are viewing the start date month
-        if (month === startDate.getMonth() && year === startDate.getFullYear()) {
-            const firstDayEl = calendarDaysGrid.querySelector('[data-workshop-day="1"]');
-            if (firstDayEl) {
-                firstDayEl.click();
-            }
-        } else {
-            // Re-show placeholder if viewing another month without selected days
-            detailsPlaceholder.style.display = "block";
-            detailsActiveContent.style.display = "none";
         }
     }
 
@@ -611,4 +755,89 @@ function initCalendar() {
 
     // Render initially
     renderCalendar();
+}
+
+/**
+ * Calculates and dynamically renders the next 3 monthly batch dates for the workshop
+ */
+function initUpcomingBatches() {
+    const batchesGrid = document.getElementById("upcoming-batches-grid");
+    if (!batchesGrid) return;
+    
+    batchesGrid.innerHTML = "";
+    
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    
+    let batchesCount = 0;
+    let monthOffset = 0;
+    
+    while (batchesCount < 3) {
+        let checkMonth = currentMonth + monthOffset;
+        let checkYear = currentYear;
+        if (checkMonth > 11) {
+            checkYear += Math.floor(checkMonth / 12);
+            checkMonth = checkMonth % 12;
+        }
+        
+        const firstMonday = getFirstMonday(checkYear, checkMonth);
+        const deadline = new Date(firstMonday.getTime());
+        deadline.setDate(deadline.getDate() - (WORKSHOP_CONFIG.REGISTRATION_CLOSE_DAYS_BEFORE || 0));
+        deadline.setHours(23, 59, 59, 999);
+        
+        const isMissed = now > deadline;
+        
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const batchName = `${monthNames[checkMonth]} Batch`;
+        const dateRangeStr = formatDateRange(firstMonday, new Date(firstMonday.getFullYear(), firstMonday.getMonth(), firstMonday.getDate() + 20));
+        
+        const card = document.createElement("div");
+        card.className = `batch-card ${isMissed ? 'closed' : 'open'}`;
+        card.style.cssText = `
+            border: 2px solid ${isMissed ? 'var(--color-border)' : 'var(--color-sage-light)'};
+            background-color: ${isMissed ? 'var(--color-white)' : 'var(--color-sage-pale)'};
+            border-radius: var(--border-radius-md);
+            padding: 20px;
+            text-align: center;
+            opacity: ${isMissed ? '0.7' : '1'};
+            transition: var(--transition-smooth);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 120px;
+        `;
+        
+        card.innerHTML = `
+            <span class="batch-status-badge" style="
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                padding: 3px 8px;
+                border-radius: 20px;
+                background-color: ${isMissed ? '#e9ecef' : 'var(--color-sage)'};
+                color: ${isMissed ? '#6c757d' : 'var(--color-pure-white)'};
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            ">${isMissed ? 'Closed' : 'Open'}</span>
+            <h4 style="font-family: var(--font-primary); font-size: 1.25rem; color: var(--color-text-dark); margin: 0 0 8px 0; text-align: left;">${batchName}</h4>
+            <p style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-dark); margin-bottom: 6px; text-align: left;">${dateRangeStr}</p>
+            <p style="font-size: 0.8rem; color: var(--color-text-muted); margin: 0 0 12px 0; text-align: left;">
+                ${isMissed ? 'Registration closed for this batch' : `Register by ${formatDateLong(deadline)}`}
+            </p>
+            ${isMissed ? '' : `
+            <a href="${WORKSHOP_CONFIG.GOOGLE_FORM_URL}" target="_blank" class="btn btn-secondary btn-small" style="margin-top: 15px; width: fit-content; align-self: flex-start; padding: 8px 20px; font-size: 0.8rem;">
+                Register for this Batch <i class="fa-solid fa-external-link"></i>
+            </a>
+            `}
+        `;
+        
+        batchesGrid.appendChild(card);
+        
+        batchesCount++;
+        monthOffset++;
+    }
 }
