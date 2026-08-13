@@ -1129,6 +1129,79 @@ img {
     margin-bottom: 24px;
 }
 
+/* Dynamic timing and date selector styling */
+.checkout-details-group {
+    margin-bottom: 24px;
+    background-color: var(--color-sage-pale);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 20px;
+    transition: var(--transition-smooth);
+}
+
+.checkout-details-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-dark);
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.timing-select-wrapper {
+    position: relative;
+    margin-top: 8px;
+}
+
+.timing-select-wrapper select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-text-dark);
+    background-color: var(--color-white);
+    appearance: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.timing-select-wrapper select:focus {
+    outline: none;
+    border-color: var(--color-sage);
+}
+
+.timing-select-wrapper::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+.selected-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--color-sage-light);
+    color: var(--color-sage-dark);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid rgba(91, 117, 98, 0.15);
+}
+
+.selected-date-badge i {
+    color: var(--color-sage);
+}
+
+
 .summary-box h4 {
     font-size: 1rem;
     color: var(--color-text-muted);

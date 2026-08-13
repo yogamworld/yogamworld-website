@@ -28,6 +28,9 @@ const WORKSHOP_CONFIG = {
     
     // General Workshop Variables
     timingText: "6:00 AM - 7:00 AM EST",
+    CLASS_TIMINGS: [
+        "6:00 AM - 7:00 AM EST"
+    ],
     
     // Recurring & Deadline Settings
     // Registration closes this many days before the workshop begins (default: 1 day before, e.g. Sunday)
@@ -42,6 +45,8 @@ const WORKSHOP_CONFIG = {
 
 // Global active workshop program state
 let currentWorkshop = null;
+window.selectedDate = null;
+window.selectedTimeSlot = "";
 
 // --- Helper Functions for Recurring Dates & Deadlines ---
 
@@ -330,27 +335,140 @@ function initCheckoutWidget() {
     
     const checkoutCardBtn = document.getElementById("checkout-card-btn");
     
+    // Custom date & timing elements
+    const checkoutDetailsGroup = document.getElementById("checkout-details-group");
+    const selectedDateText = document.getElementById("checkout-selected-date-text");
+    const selectedDateBadge = document.getElementById("checkout-selected-date-badge");
+    const timingSelectWrapper = document.getElementById("checkout-timing-select-wrapper");
+    const zelleMemoText = document.getElementById("zelle-memo-text");
+    
     // State variables
     let selectedProduct = "program"; // "program" or "session"
     let selectedPrice = 75;
     let selectedMethod = "card"; // "card" or "zelle"
     
+    // Initialize default timing
+    if (!window.selectedTimeSlot && WORKSHOP_CONFIG.CLASS_TIMINGS.length > 0) {
+        window.selectedTimeSlot = WORKSHOP_CONFIG.CLASS_TIMINGS[0];
+    }
+    
+    // Helper to format date
+    function formatDateFriendly(date) {
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+    
+    function renderTimingSelector() {
+        if (!timingSelectWrapper) return;
+        timingSelectWrapper.innerHTML = "";
+        
+        if (WORKSHOP_CONFIG.CLASS_TIMINGS.length > 1) {
+            const selectEl = document.createElement("select");
+            selectEl.id = "checkout-timing-select";
+            
+            WORKSHOP_CONFIG.CLASS_TIMINGS.forEach(time => {
+                const opt = document.createElement("option");
+                opt.value = time;
+                opt.textContent = time;
+                if (time === window.selectedTimeSlot) {
+                    opt.selected = true;
+                }
+                selectEl.appendChild(opt);
+            });
+            
+            selectEl.addEventListener("change", (e) => {
+                window.selectedTimeSlot = e.target.value;
+                updateCheckoutView();
+            });
+            
+            timingSelectWrapper.appendChild(selectEl);
+        } else if (WORKSHOP_CONFIG.CLASS_TIMINGS.length === 1) {
+            const spanEl = document.createElement("span");
+            spanEl.style.cssText = "font-weight: 600; color: var(--color-sage-dark); font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;";
+            spanEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${WORKSHOP_CONFIG.CLASS_TIMINGS[0]}`;
+            window.selectedTimeSlot = WORKSHOP_CONFIG.CLASS_TIMINGS[0];
+            timingSelectWrapper.appendChild(spanEl);
+        } else {
+            timingSelectWrapper.innerHTML = `<span style="color: var(--color-text-muted); font-size: 0.9rem;">No timings configured</span>`;
+        }
+    }
+    
     function updateCheckoutView() {
+        const isClosed = WORKSHOP_CONFIG.REGISTRATION_FORCE_CLOSED || currentWorkshop.status === "closed";
+        
         // Determine product names and prices
-        const productName = selectedProduct === "program" ? "21 Days Online Program" : "Individual Yoga Session";
+        let productName = "";
+        let isDateRequiredAndMissing = false;
+        
+        if (selectedProduct === "program") {
+            const startStr = currentWorkshop ? currentWorkshop.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "";
+            productName = `21 Days Online Program (starts ${startStr})`;
+            
+            if (selectedDateText) {
+                selectedDateText.textContent = `Full 21-Day Batch (starts ${currentWorkshop ? formatDateFriendly(currentWorkshop.startDate) : ''})`;
+            }
+            if (selectedDateBadge) {
+                selectedDateBadge.style.backgroundColor = "var(--color-sage-light)";
+                selectedDateBadge.style.color = "var(--color-sage-dark)";
+                selectedDateBadge.style.borderColor = "rgba(91, 117, 98, 0.15)";
+            }
+        } else {
+            // Drop-in single session
+            productName = "Individual Yoga Session";
+            
+            if (window.selectedDate) {
+                productName += ` (${window.selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})`;
+                if (selectedDateText) {
+                    selectedDateText.textContent = formatDateFriendly(window.selectedDate);
+                }
+                if (selectedDateBadge) {
+                    selectedDateBadge.style.backgroundColor = "var(--color-sage-light)";
+                    selectedDateBadge.style.color = "var(--color-sage-dark)";
+                    selectedDateBadge.style.borderColor = "rgba(91, 117, 98, 0.15)";
+                }
+            } else {
+                isDateRequiredAndMissing = true;
+                if (selectedDateText) {
+                    selectedDateText.textContent = "Please select a date from the calendar above";
+                }
+                if (selectedDateBadge) {
+                    selectedDateBadge.style.backgroundColor = "var(--color-earth-light)";
+                    selectedDateBadge.style.color = "var(--color-earth-dark)";
+                    selectedDateBadge.style.borderColor = "rgba(170, 113, 88, 0.2)";
+                }
+            }
+        }
+        
+        // Render timing dropdown/text
+        renderTimingSelector();
         
         // Update summary text
         if (cardSummaryName) cardSummaryName.textContent = productName;
         if (cardSummaryPrice) cardSummaryPrice.textContent = `$${selectedPrice}`;
         if (zelleSummaryPrice) zelleSummaryPrice.textContent = `$${selectedPrice}`;
         
-        // Update Stripe Payment Link
+        // Update Zelle Memo
+        if (zelleMemoText) {
+            if (selectedProduct === "program") {
+                zelleMemoText.textContent = `Yogam Program - ${window.selectedTimeSlot}`;
+            } else if (window.selectedDate) {
+                const dateShort = window.selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+                zelleMemoText.textContent = `Yogam Drop-in - ${dateShort} @ ${window.selectedTimeSlot}`;
+            } else {
+                zelleMemoText.textContent = "Select a date first";
+            }
+        }
+        
+        // Update Stripe Payment Link & state of CTA Button
         if (checkoutCardBtn) {
-            const isClosed = WORKSHOP_CONFIG.REGISTRATION_FORCE_CLOSED || currentWorkshop.status === "closed";
             if (isClosed) {
                 checkoutCardBtn.setAttribute("href", "#");
                 checkoutCardBtn.classList.add("disabled");
                 checkoutCardBtn.innerHTML = `Registration Closed <i class="fa-solid fa-lock"></i>`;
+            } else if (isDateRequiredAndMissing) {
+                checkoutCardBtn.setAttribute("href", "#");
+                checkoutCardBtn.classList.add("disabled");
+                checkoutCardBtn.innerHTML = `Select a Calendar Date Above <i class="fa-solid fa-arrow-up"></i>`;
             } else {
                 checkoutCardBtn.classList.remove("disabled");
                 const stripeUrl = selectedProduct === "program" 
@@ -380,6 +498,12 @@ function initCheckoutWidget() {
             selectedProduct = box.getAttribute("data-product");
             selectedPrice = parseInt(box.getAttribute("data-price"), 10);
             
+            // Clear date selection if moving back to program
+            if (selectedProduct === "program") {
+                window.selectedDate = null;
+                if (window.renderCalendar) window.renderCalendar();
+            }
+            
             updateCheckoutView();
         });
     });
@@ -395,6 +519,37 @@ function initCheckoutWidget() {
             updateCheckoutView();
         });
     });
+    
+    // Global calendar select date integration
+    window.selectSessionDate = function(date) {
+        window.selectedDate = date;
+        
+        // Re-render calendar to highlight new selection
+        if (window.renderCalendar) {
+            window.renderCalendar();
+        }
+        
+        // Trigger click on the single session select box if it's not active
+        const sessionBox = document.querySelector('.select-program-grid .select-box[data-product="session"]');
+        if (sessionBox && !sessionBox.classList.contains("active")) {
+            programBoxes.forEach(b => b.classList.remove("active"));
+            sessionBox.classList.add("active");
+            selectedProduct = "session";
+            selectedPrice = 15;
+        }
+        
+        // Trigger visual update
+        updateCheckoutView();
+        
+        // Smooth scroll to selection details
+        if (checkoutDetailsGroup) {
+            const targetOffset = checkoutDetailsGroup.offsetTop - 120;
+            window.scrollTo({
+                top: targetOffset,
+                behavior: "smooth"
+            });
+        }
+    };
     
     // Run initial configuration update
     updateCheckoutView();
@@ -736,6 +891,17 @@ function initCalendar() {
             // Check if this date falls within the 21-day workshop window
             if (thisDayDate >= viewStartDate && thisDayDate <= viewEndDate) {
                 dayEl.classList.add("active-range");
+                
+                // Add selected class if this day matches the selected date
+                if (window.selectedDate && thisDayDate.toDateString() === window.selectedDate.toDateString()) {
+                    dayEl.classList.add("selected");
+                }
+                
+                dayEl.addEventListener("click", () => {
+                    if (window.selectSessionDate) {
+                        window.selectSessionDate(thisDayDate);
+                    }
+                });
             }
             
             calendarDaysGrid.appendChild(dayEl);
@@ -752,6 +918,9 @@ function initCalendar() {
         currentViewDate.setMonth(currentViewDate.getMonth() + 1);
         renderCalendar();
     });
+
+    // Expose renderCalendar globally so it can be re-rendered when selectedDate changes
+    window.renderCalendar = renderCalendar;
 
     // Render initially
     renderCalendar();

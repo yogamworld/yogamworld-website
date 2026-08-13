@@ -346,6 +346,24 @@
                                     </div>
                                     <span class="select-indicator"><i class="fa-solid fa-circle-check"></i></span>
                                 </div>
+                            <!-- Selected Date & Timing Options -->
+                            <div class="checkout-details-group" id="checkout-details-group">
+                                <h4 class="checkout-details-title">Class Schedule Details</h4>
+                                <div style="display: flex; flex-direction: column; gap: 15px;">
+                                    <div id="checkout-selected-date-container">
+                                        <span style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Selected Date:</span>
+                                        <div class="selected-date-badge" id="checkout-selected-date-badge">
+                                            <i class="fa-regular fa-calendar-check"></i>
+                                            <span id="checkout-selected-date-text">Please click a day on the calendar above</span>
+                                        </div>
+                                    </div>
+                                    <div id="checkout-timing-container">
+                                        <span style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Class Time:</span>
+                                        <div class="timing-select-wrapper" id="checkout-timing-select-wrapper">
+                                            <!-- Dynamically generated select dropdown or static text will go here -->
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <!-- Payment Method Selector -->
@@ -400,6 +418,10 @@
                                         <div class="zelle-email-box">
                                             <span class="zelle-label">Zelle Registered Email</span>
                                             <strong class="zelle-email user-selectable">yogam.world@gmail.com</strong>
+                                        </div>
+                                        <div class="zelle-email-box" style="margin-top: 12px;">
+                                            <span class="zelle-label">Include Zelle Memo/Note:</span>
+                                            <strong class="zelle-email user-selectable" id="zelle-memo-text" style="color: var(--color-lavender); font-weight: 700;">Yogam Program Enrollment</strong>
                                         </div>
                                     </div>
                                 </div>
