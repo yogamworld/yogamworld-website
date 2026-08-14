@@ -38,7 +38,7 @@
                 <ul class="nav-list">
                     <li><a href="#" class="nav-link active">Home</a></li>
                     <li><a href="#about" class="nav-link">About Me</a></li>
-                    <li><a href="#schedule" class="nav-link">Schedule</a></li>
+                    <li><a href="#register" class="nav-link">Schedule & Enroll</a></li>
                     <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#register" class="btn btn-nav-cta cta-register-trigger">Join the 21-Day Workshop</a></li>
@@ -103,52 +103,7 @@
             </div>
         </section>
 
-        <!-- Calendar Schedule Section -->
-        <section class="calendar-section section-padding" id="schedule">
-            <div class="container">
-                <div class="section-header text-center scroll-animate">
-                    <span class="section-subtitle">Workshop Calendar</span>
-                    <h2 class="section-title">Interactive Batch Schedule</h2>
-                    <p class="section-description">Interactive schedule displaying the 21 consecutive days of the upcoming batch.</p>
-                </div>
-                
-                <div class="calendar-layout rounded-card shadow-soft scroll-animate">
-                    <div class="calendar-wrapper" style="width: 100%;">
-                        <div class="calendar-header">
-                            <button id="prev-month" class="cal-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                            <h3 id="calendar-month-year">July 2026</h3>
-                            <button id="next-month" class="cal-btn"><i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                        <div class="calendar-weekdays">
-                            <div>Su</div>
-                            <div>Mo</div>
-                            <div>Tu</div>
-                            <div>We</div>
-                            <div>Th</div>
-                            <div>Fr</div>
-                            <div>Sa</div>
-                        </div>
-                        <div class="calendar-days" id="calendar-days-grid">
-                            <!-- Dynamically generated calendar days -->
-                        </div>
-                        <div class="calendar-legend">
-                            <span class="legend-item"><span class="dot-legend dot-start"></span> Batch Start Date</span>
-                            <span class="legend-item"><span class="dot-legend dot-active"></span> Active Program Days</span>
-                            <span class="legend-item"><span class="dot-legend dot-today"></span> Today</span>
-                        </div>
-                    </div>
-                </div>
 
-
-                <!-- Upcoming Batches List -->
-                <div class="upcoming-batches-container rounded-card shadow-soft scroll-animate" style="margin-top: 30px; background-color: var(--color-white); border: 1px solid var(--color-border); padding: 30px;">
-                    <h3 class="upcoming-batches-title" style="font-family: var(--font-primary); font-size: 1.5rem; color: var(--color-text-dark); margin-bottom: 20px; text-align: center;"><i class="fa-regular fa-calendar-days" style="color: var(--color-sage);"></i> Upcoming Batch Dates</h3>
-                    <div class="batches-grid" id="upcoming-batches-grid">
-                        <!-- Dynamically generated upcoming batches -->
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Testimonials Section -->
         <section class="testimonials-section section-padding" id="testimonials">
@@ -283,37 +238,29 @@
         <!-- Registration Section -->
         <section class="registration-section section-padding" id="register">
             <div class="container">
+                <!-- Upcoming Batches List -->
+                <div class="upcoming-batches-container rounded-card shadow-soft scroll-animate" style="margin-bottom: 40px; background-color: var(--color-white); border: 1px solid var(--color-border); padding: 30px;">
+                    <h3 class="upcoming-batches-title" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-text-dark); margin-bottom: 20px; text-align: center;"><i class="fa-regular fa-calendar-days" style="color: var(--color-sage);"></i> Upcoming Batch Dates</h3>
+                    <div class="batches-grid" id="upcoming-batches-grid">
+                        <!-- Dynamically generated upcoming batches -->
+                    </div>
+                </div>
+
                 <div class="registration-wrapper rounded-card shadow-soft scroll-animate">
                     <div class="registration-header text-center">
                         <span class="badge-accent"><i class="fa-solid fa-ticket"></i> Workshop Enrollment</span>
                         <h2 class="reg-title">Simple Enrollment Flow</h2>
-                        <p class="reg-desc" style="margin-bottom: 40px;">Follow these 3 steps to register for the workshop, submit payment, and join the WhatsApp group.</p>
+                        <p class="reg-desc" style="margin-bottom: 40px;">Follow these 4 steps to register for the workshop, submit payment, and join the WhatsApp group.</p>
                     </div>
                     
                     <div class="checkout-widget">
-                        <!-- Step 1: Complete Google Registration Form -->
+                        <!-- Step 1: Choose Plan & Schedule -->
                         <div class="checkout-step" id="checkout-step-1">
                             <div class="step-num">1</div>
-                            <h3 class="step-title">Complete Google Registration Form</h3>
-                            <div class="step-instruction-box" style="margin-bottom: 24px;">
-                                <p style="font-size: 1rem; color: var(--color-text-dark); line-height: 1.6; margin: 0;">
-                                    Please complete the registration form first. This form collects your participant details, prior yoga experience, health information, and goals to help us understand your needs before the workshop.
-                                </p>
-                            </div>
-                            <div class="checkout-cta-wrap">
-                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSem65n_cRAdejsrYFIoJuiABc7cGRs4qd6qLS7nE7E7nw5FwA/viewform" target="_blank" class="btn btn-primary btn-large btn-register-link">
-                                    Fill Google Registration Form <i class="fa-solid fa-external-link"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <!-- Step 2: Choose Pricing & Payment -->
-                        <div class="checkout-step" id="checkout-step-2">
-                            <div class="step-num">2</div>
-                            <h3 class="step-title">Select Your Plan & Complete Payment</h3>
+                            <h3 class="step-title">Select Your Plan & Schedule</h3>
                             <div class="step-instruction-box" style="margin-bottom: 20px;">
                                 <p style="font-size: 1rem; color: var(--color-text-dark); line-height: 1.6; margin: 0;">
-                                    After submitting the registration form, choose your preferred package and payment option below.
+                                    Select your preferred package (21-Day Program or Individual drop-in session) and select your time slot below.
                                 </p>
                             </div>
                             
@@ -346,10 +293,45 @@
                                     </div>
                                     <span class="select-indicator"><i class="fa-solid fa-circle-check"></i></span>
                                 </div>
-                            <!-- Selected Date & Timing Options -->
-                            <div class="checkout-details-group" id="checkout-details-group">
+                            </div>
+
+                            <!-- Embedded Calendar & Timing Selector (Dynamically shown/hidden) -->
+                            <div class="checkout-details-group" id="checkout-details-group" style="margin-bottom: 24px;">
                                 <h4 class="checkout-details-title">Class Schedule Details</h4>
-                                <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div style="display: flex; flex-direction: column; gap: 20px;">
+                                    <!-- Dynamic Calendar container, only visible when Individual Session is selected -->
+                                    <div id="checkout-calendar-container" style="display: none;">
+                                        <span style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 12px;"><i class="fa-regular fa-calendar" style="color: var(--color-sage); margin-right: 6px;"></i> Click a Date on the Calendar:</span>
+                                        
+                                        <!-- Embedded Calendar Grid -->
+                                        <div class="calendar-layout rounded-card shadow-soft" style="border: 1px solid var(--color-border); padding: 20px; background-color: var(--color-white); max-width: 450px; margin: 0 auto 15px auto;">
+                                            <div class="calendar-wrapper" style="width: 100%;">
+                                                <div class="calendar-header" style="margin-bottom: 15px;">
+                                                    <button type="button" id="prev-month" class="cal-btn" style="border: none; background: none; cursor: pointer; color: var(--color-text-dark); font-size: 1rem;"><i class="fa-solid fa-chevron-left"></i></button>
+                                                    <h3 id="calendar-month-year" style="font-size: 1.15rem; font-weight: 700; margin: 0;">July 2026</h3>
+                                                    <button type="button" id="next-month" class="cal-btn" style="border: none; background: none; cursor: pointer; color: var(--color-text-dark); font-size: 1rem;"><i class="fa-solid fa-chevron-right"></i></button>
+                                                </div>
+                                                <div class="calendar-weekdays" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--color-text-muted); margin-bottom: 10px;">
+                                                    <div>Su</div>
+                                                    <div>Mo</div>
+                                                    <div>Tu</div>
+                                                    <div>We</div>
+                                                    <div>Th</div>
+                                                    <div>Fr</div>
+                                                    <div>Sa</div>
+                                                </div>
+                                                <div class="calendar-days" id="calendar-days-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;">
+                                                    <!-- Dynamically generated calendar days -->
+                                                </div>
+                                                <div class="calendar-legend" style="display: flex; justify-content: center; gap: 15px; margin-top: 15px; font-size: 0.75rem; color: var(--color-text-muted); flex-wrap: wrap;">
+                                                    <span class="legend-item"><span class="dot-legend dot-start" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-lavender-accent); border: 1px solid var(--color-lavender);"></span> Start</span>
+                                                    <span class="legend-item"><span class="dot-legend dot-active" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: var(--color-sage-light);"></span> Active</span>
+                                                    <span class="legend-item"><span class="dot-legend dot-today" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--color-earth-dark);"></span> Today</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div id="checkout-selected-date-container">
                                         <span style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Selected Date:</span>
                                         <div class="selected-date-badge" id="checkout-selected-date-badge">
@@ -357,6 +339,7 @@
                                             <span id="checkout-selected-date-text">Please click a day on the calendar above</span>
                                         </div>
                                     </div>
+
                                     <div id="checkout-timing-container">
                                         <span style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Class Time:</span>
                                         <div class="timing-select-wrapper" id="checkout-timing-select-wrapper">
@@ -366,9 +349,40 @@
                                 </div>
                             </div>
                             
-                            <!-- Payment Method Selector -->
-                            <div class="payment-method-header" style="margin-top: 30px; margin-bottom: 15px;">
-                                <h4 style="font-family: var(--font-primary); font-size: 1.15rem; font-weight: 700; color: var(--color-text-dark); margin: 0;">Select Payment Method:</h4>
+                            <div class="checkout-cta-wrap" style="text-align: right;">
+                                <button type="button" class="btn btn-primary" id="wizard-next-1" style="padding: 12px 30px;">
+                                    Next: Complete Registration <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Complete Registration Form -->
+                        <div class="checkout-step disabled-step" id="checkout-step-2">
+                            <div class="step-num">2</div>
+                            <h3 class="step-title">Complete Registration Form</h3>
+                            <div class="step-instruction-box" style="margin-bottom: 24px;">
+                                <p style="font-size: 1rem; color: var(--color-text-dark); line-height: 1.6; margin: 0;">
+                                    Please click below to fill out the Google Registration Form. This helps us understand your needs, medical conditions, and yoga experience before the workshop.
+                                </p>
+                            </div>
+                            <div class="checkout-cta-wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSem65n_cRAdejsrYFIoJuiABc7cGRs4qd6qLS7nE7E7nw5FwA/viewform" target="_blank" class="btn btn-primary btn-large btn-register-link" id="wizard-register-form-btn">
+                                    Fill Google Registration Form <i class="fa-solid fa-external-link"></i>
+                                </a>
+                                <button type="button" class="btn btn-secondary" id="wizard-next-2" style="padding: 12px 30px;" disabled>
+                                    Next: Secure Payment <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Secure Payment -->
+                        <div class="checkout-step disabled-step" id="checkout-step-3">
+                            <div class="step-num">3</div>
+                            <h3 class="step-title">Secure Payment</h3>
+                            <div class="step-instruction-box" style="margin-bottom: 20px;">
+                                <p style="font-size: 1rem; color: var(--color-text-dark); line-height: 1.6; margin: 0;">
+                                    Choose your preferred payment method below to complete booking.
+                                </p>
                             </div>
                             
                             <div class="selection-grid select-payment-grid" style="margin-bottom: 24px;">
@@ -402,10 +416,13 @@
                                         <strong id="card-summary-price">$75</strong>
                                     </div>
                                 </div>
-                                <div class="checkout-cta-wrap">
+                                <div class="checkout-cta-wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                                     <a href="#" target="_blank" class="btn btn-primary btn-large btn-stripe-link" id="checkout-card-btn">
                                         Pay Securely via Card <i class="fa-solid fa-credit-card"></i>
                                     </a>
+                                    <button type="button" class="btn btn-secondary" id="wizard-next-3" style="padding: 12px 30px;">
+                                        Next: Onboarding <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
                                 </div>
                             </div>
                             
@@ -425,16 +442,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div style="text-align: right; margin-top: 15px;">
+                                    <button type="button" class="btn btn-secondary" id="wizard-next-3-zelle" style="padding: 12px 30px;">
+                                        Next: Onboarding <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        
-                        <!-- Step 3: Join the WhatsApp Group -->
-                        <div class="checkout-step" id="checkout-step-3">
-                            <div class="step-num">3</div>
+
+                        <!-- Step 4: Join Onboarding WhatsApp Group -->
+                        <div class="checkout-step disabled-step" id="checkout-step-4">
+                            <div class="step-num">4</div>
                             <h3 class="step-title">Join Onboarding WhatsApp Group</h3>
                             <div class="step-instruction-box" style="margin-bottom: 24px;">
                                 <p style="font-size: 1rem; color: var(--color-text-dark); line-height: 1.6; margin: 0;">
-                                    Once your registration form is submitted and payment is complete, click below to join the official workshop WhatsApp group. This is where you will receive Zoom joining links, batch updates, daily reminders, and session guidelines.
+                                    Once payment is complete, click below to join the official workshop WhatsApp group. This is where you will receive Zoom joining links, batch updates, daily reminders, and session guidelines.
                                 </p>
                             </div>
                             <div class="checkout-cta-wrap">
@@ -577,7 +599,7 @@
                 <ul>
                     <li><a href="#">Home</a></li>
                     <li><a href="#about">About Me</a></li>
-                    <li><a href="#schedule">Schedule</a></li>
+                    <li><a href="#register">Schedule & Enroll</a></li>
                 </ul>
             </div>
             

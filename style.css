@@ -960,6 +960,14 @@ img {
     padding: 40px;
     box-shadow: var(--shadow-soft);
     position: relative;
+    transition: var(--transition-smooth);
+}
+
+.checkout-step.disabled-step {
+    opacity: 0.45;
+    pointer-events: none;
+    user-select: none;
+    filter: grayscale(40%);
 }
 
 .step-num {
@@ -983,13 +991,18 @@ img {
 }
 
 #checkout-step-2 .step-num {
+    background-color: var(--color-earth);
+    box-shadow: 0 4px 10px rgba(195, 141, 117, 0.3);
+}
+
+#checkout-step-3 .step-num {
     background-color: var(--color-lavender);
     box-shadow: 0 4px 10px rgba(123, 92, 156, 0.3);
 }
 
-#checkout-step-3 .step-num {
-    background-color: var(--color-earth);
-    box-shadow: 0 4px 10px rgba(195, 141, 117, 0.3);
+#checkout-step-4 .step-num {
+    background-color: var(--color-text-muted);
+    box-shadow: 0 4px 10px rgba(96, 108, 90, 0.3);
 }
 
 .step-title {

@@ -342,10 +342,26 @@ function initCheckoutWidget() {
     const timingSelectWrapper = document.getElementById("checkout-timing-select-wrapper");
     const zelleMemoText = document.getElementById("zelle-memo-text");
     
+    // Calendar container inside Step 1
+    const calendarContainer = document.getElementById("checkout-calendar-container");
+    
+    // Wizard Buttons and Steps
+    const step2 = document.getElementById("checkout-step-2");
+    const step3 = document.getElementById("checkout-step-3");
+    const step4 = document.getElementById("checkout-step-4");
+    
+    const nextBtn1 = document.getElementById("wizard-next-1");
+    const nextBtn2 = document.getElementById("wizard-next-2");
+    const nextBtn3 = document.getElementById("wizard-next-3");
+    const nextBtn3Zelle = document.getElementById("wizard-next-3-zelle");
+    
+    const registerFormBtn = document.getElementById("wizard-register-form-btn");
+    
     // State variables
     let selectedProduct = "program"; // "program" or "session"
     let selectedPrice = 75;
     let selectedMethod = "card"; // "card" or "zelle"
+    let hasRegistered = false; // Tracks if Google Form link was clicked
     
     // Initialize default timing
     if (!window.selectedTimeSlot && WORKSHOP_CONFIG.CLASS_TIMINGS.length > 0) {
@@ -356,6 +372,24 @@ function initCheckoutWidget() {
     function formatDateFriendly(date) {
         const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
         return date.toLocaleDateString('en-US', options);
+    }
+    
+    function lockDownstreamSteps(fromStep) {
+        if (fromStep <= 1) {
+            if (step2) step2.classList.add("disabled-step");
+            if (nextBtn2) {
+                nextBtn2.disabled = true;
+                nextBtn2.classList.add("btn-secondary");
+                nextBtn2.classList.remove("btn-primary");
+            }
+            hasRegistered = false;
+        }
+        if (fromStep <= 2) {
+            if (step3) step3.classList.add("disabled-step");
+        }
+        if (fromStep <= 3) {
+            if (step4) step4.classList.add("disabled-step");
+        }
     }
     
     function renderTimingSelector() {
@@ -395,6 +429,13 @@ function initCheckoutWidget() {
     
     function updateCheckoutView() {
         const isClosed = WORKSHOP_CONFIG.REGISTRATION_FORCE_CLOSED || currentWorkshop.status === "closed";
+        
+        // Handle calendar view display based on selected plan
+        if (selectedProduct === "program") {
+            if (calendarContainer) calendarContainer.style.display = "none";
+        } else {
+            if (calendarContainer) calendarContainer.style.display = "block";
+        }
         
         // Determine product names and prices
         let productName = "";
@@ -439,6 +480,19 @@ function initCheckoutWidget() {
             }
         }
         
+        // Update state of Step 1 Next Button
+        if (nextBtn1) {
+            if (isDateRequiredAndMissing) {
+                nextBtn1.disabled = true;
+                nextBtn1.style.opacity = "0.6";
+                nextBtn1.innerHTML = `Select a Date Above <i class="fa-solid fa-calendar"></i>`;
+            } else {
+                nextBtn1.disabled = false;
+                nextBtn1.style.opacity = "1";
+                nextBtn1.innerHTML = `Next: Complete Registration <i class="fa-solid fa-arrow-right"></i>`;
+            }
+        }
+        
         // Render timing dropdown/text
         renderTimingSelector();
         
@@ -465,10 +519,6 @@ function initCheckoutWidget() {
                 checkoutCardBtn.setAttribute("href", "#");
                 checkoutCardBtn.classList.add("disabled");
                 checkoutCardBtn.innerHTML = `Registration Closed <i class="fa-solid fa-lock"></i>`;
-            } else if (isDateRequiredAndMissing) {
-                checkoutCardBtn.setAttribute("href", "#");
-                checkoutCardBtn.classList.add("disabled");
-                checkoutCardBtn.innerHTML = `Select a Calendar Date Above <i class="fa-solid fa-arrow-up"></i>`;
             } else {
                 checkoutCardBtn.classList.remove("disabled");
                 const stripeUrl = selectedProduct === "program" 
@@ -504,11 +554,12 @@ function initCheckoutWidget() {
                 if (window.renderCalendar) window.renderCalendar();
             }
             
+            lockDownstreamSteps(1);
             updateCheckoutView();
         });
     });
     
-    // Bind Step 2 Payment Clicks
+    // Bind Step 3 Payment Clicks
     paymentBoxes.forEach(box => {
         box.addEventListener("click", () => {
             paymentBoxes.forEach(b => b.classList.remove("active"));
@@ -516,6 +567,7 @@ function initCheckoutWidget() {
             
             selectedMethod = box.getAttribute("data-method");
             
+            lockDownstreamSteps(3);
             updateCheckoutView();
         });
     });
@@ -538,18 +590,61 @@ function initCheckoutWidget() {
             selectedPrice = 15;
         }
         
-        // Trigger visual update
+        lockDownstreamSteps(1);
         updateCheckoutView();
-        
-        // Smooth scroll to selection details
-        if (checkoutDetailsGroup) {
-            const targetOffset = checkoutDetailsGroup.offsetTop - 120;
-            window.scrollTo({
-                top: targetOffset,
-                behavior: "smooth"
-            });
-        }
     };
+    
+    // Bind Wizard Navigation Buttons
+    if (nextBtn1) {
+        nextBtn1.addEventListener("click", () => {
+            if (step2) {
+                step2.classList.remove("disabled-step");
+                const targetOffset = step2.offsetTop - 100;
+                window.scrollTo({ top: targetOffset, behavior: "smooth" });
+            }
+        });
+    }
+    
+    if (registerFormBtn) {
+        registerFormBtn.addEventListener("click", () => {
+            hasRegistered = true;
+            if (nextBtn2) {
+                nextBtn2.disabled = false;
+                nextBtn2.classList.remove("btn-secondary");
+                nextBtn2.classList.add("btn-primary");
+            }
+        });
+    }
+    
+    if (nextBtn2) {
+        nextBtn2.addEventListener("click", () => {
+            if (step3) {
+                step3.classList.remove("disabled-step");
+                const targetOffset = step3.offsetTop - 100;
+                window.scrollTo({ top: targetOffset, behavior: "smooth" });
+            }
+        });
+    }
+    
+    if (nextBtn3) {
+        nextBtn3.addEventListener("click", () => {
+            if (step4) {
+                step4.classList.remove("disabled-step");
+                const targetOffset = step4.offsetTop - 100;
+                window.scrollTo({ top: targetOffset, behavior: "smooth" });
+            }
+        });
+    }
+    
+    if (nextBtn3Zelle) {
+        nextBtn3Zelle.addEventListener("click", () => {
+            if (step4) {
+                step4.classList.remove("disabled-step");
+                const targetOffset = step4.offsetTop - 100;
+                window.scrollTo({ top: targetOffset, behavior: "smooth" });
+            }
+        });
+    }
     
     // Run initial configuration update
     updateCheckoutView();
