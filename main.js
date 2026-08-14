@@ -27,9 +27,9 @@ const WORKSHOP_CONFIG = {
     whatsappSocialUrl: "https://wa.me/18045168515",
     
     // General Workshop Variables
-    timingText: "6:00 AM - 7:00 AM EST",
+    timingText: "5:30 AM - 6:30 AM EST (4:30 AM - 5:30 AM CST)",
     CLASS_TIMINGS: [
-        "6:00 AM - 7:00 AM EST"
+        "5:30 AM - 6:30 AM EST / 4:30 AM - 5:30 AM CST"
     ],
     
     // Recurring & Deadline Settings
@@ -345,10 +345,14 @@ function initCheckoutWidget() {
     // Calendar container inside Step 1
     const calendarContainer = document.getElementById("checkout-calendar-container");
     
-    // Wizard Buttons and Steps
+    // Wizard Inputs, Buttons, and Steps
     const step2 = document.getElementById("checkout-step-2");
     const step3 = document.getElementById("checkout-step-3");
     const step4 = document.getElementById("checkout-step-4");
+    
+    const fullnameInput = document.getElementById("wizard-fullname");
+    const emailInput = document.getElementById("wizard-email");
+    const phoneInput = document.getElementById("wizard-phone");
     
     const nextBtn1 = document.getElementById("wizard-next-1");
     const nextBtn2 = document.getElementById("wizard-next-2");
@@ -374,6 +378,12 @@ function initCheckoutWidget() {
         return date.toLocaleDateString('en-US', options);
     }
     
+    // Function to calculate absolute scroll offset from the top of the body
+    function getAbsoluteOffset(element) {
+        if (!element) return 0;
+        return element.getBoundingClientRect().top + window.scrollY - 100;
+    }
+    
     function lockDownstreamSteps(fromStep) {
         if (fromStep <= 1) {
             if (step2) step2.classList.add("disabled-step");
@@ -382,7 +392,11 @@ function initCheckoutWidget() {
                 nextBtn2.classList.add("btn-secondary");
                 nextBtn2.classList.remove("btn-primary");
             }
+            if (fullnameInput) fullnameInput.value = "";
+            if (emailInput) emailInput.value = "";
+            if (phoneInput) phoneInput.value = "";
             hasRegistered = false;
+            updateGoogleFormLink();
         }
         if (fromStep <= 2) {
             if (step3) step3.classList.add("disabled-step");
@@ -391,6 +405,39 @@ function initCheckoutWidget() {
             if (step4) step4.classList.add("disabled-step");
         }
     }
+    
+    function updateGoogleFormLink() {
+        if (!registerFormBtn) return;
+        
+        const nameVal = fullnameInput ? fullnameInput.value.trim() : "";
+        const emailVal = emailInput ? emailInput.value.trim() : "";
+        const phoneVal = phoneInput ? phoneInput.value.trim() : "";
+        
+        // If all fields are filled, enable the google form link button
+        if (nameVal && emailVal && phoneVal) {
+            registerFormBtn.style.pointerEvents = "auto";
+            registerFormBtn.style.opacity = "1";
+            
+            // Build Google Form URL pre-filled parameters:
+            // entry.373348819 = Full Name
+            // entry.1290361800 = Email
+            // entry.831678222 = Phone/WhatsApp Number
+            const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSem65n_cRAdejsrYFIoJuiABc7cGRs4qd6qLS7nE7E7nw5FwA/viewform";
+            const prefilledUrl = `${baseUrl}?usp=pp_url&entry.373348819=${encodeURIComponent(nameVal)}&entry.1290361800=${encodeURIComponent(emailVal)}&entry.831678222=${encodeURIComponent(phoneVal)}`;
+            
+            registerFormBtn.setAttribute("href", prefilledUrl);
+        } else {
+            // Otherwise, disable the button
+            registerFormBtn.style.pointerEvents = "none";
+            registerFormBtn.style.opacity = "0.6";
+            registerFormBtn.setAttribute("href", "#");
+        }
+    }
+    
+    // Bind change listeners to input fields
+    if (fullnameInput) fullnameInput.addEventListener("input", updateGoogleFormLink);
+    if (emailInput) emailInput.addEventListener("input", updateGoogleFormLink);
+    if (phoneInput) phoneInput.addEventListener("input", updateGoogleFormLink);
     
     function renderTimingSelector() {
         if (!timingSelectWrapper) return;
@@ -599,7 +646,7 @@ function initCheckoutWidget() {
         nextBtn1.addEventListener("click", () => {
             if (step2) {
                 step2.classList.remove("disabled-step");
-                const targetOffset = step2.offsetTop - 100;
+                const targetOffset = getAbsoluteOffset(step2);
                 window.scrollTo({ top: targetOffset, behavior: "smooth" });
             }
         });
@@ -620,7 +667,7 @@ function initCheckoutWidget() {
         nextBtn2.addEventListener("click", () => {
             if (step3) {
                 step3.classList.remove("disabled-step");
-                const targetOffset = step3.offsetTop - 100;
+                const targetOffset = getAbsoluteOffset(step3);
                 window.scrollTo({ top: targetOffset, behavior: "smooth" });
             }
         });
@@ -630,7 +677,7 @@ function initCheckoutWidget() {
         nextBtn3.addEventListener("click", () => {
             if (step4) {
                 step4.classList.remove("disabled-step");
-                const targetOffset = step4.offsetTop - 100;
+                const targetOffset = getAbsoluteOffset(step4);
                 window.scrollTo({ top: targetOffset, behavior: "smooth" });
             }
         });
@@ -640,7 +687,7 @@ function initCheckoutWidget() {
         nextBtn3Zelle.addEventListener("click", () => {
             if (step4) {
                 step4.classList.remove("disabled-step");
-                const targetOffset = step4.offsetTop - 100;
+                const targetOffset = getAbsoluteOffset(step4);
                 window.scrollTo({ top: targetOffset, behavior: "smooth" });
             }
         });

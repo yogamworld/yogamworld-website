@@ -2172,3 +2172,10 @@ img {
         order: -1; /* Display photo first on mobile */
     }
 }
+
+/* Wizard input focus styles */
+.checkout-step input:focus {
+    outline: none;
+    border-color: var(--color-sage) !important;
+    box-shadow: 0 0 0 3px rgba(91, 117, 98, 0.15);
+}
