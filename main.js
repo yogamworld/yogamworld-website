@@ -25,6 +25,7 @@ const WORKSHOP_CONFIG = {
     facebookUrl: "https://www.facebook.com/DurgaDevi.Yogam",
     whatsappUrl: "https://chat.whatsapp.com/Efxpkub1eLLBC4aKQnhTdJ?mode=gi_t",
     whatsappSocialUrl: "https://wa.me/18045168515",
+    WEB3FORMS_ACCESS_KEY: "YOUR_WEB3FORMS_ACCESS_KEY_HERE",
     
     // General Workshop Variables
     timingText: "5:30 AM - 6:30 AM EST (4:30 AM - 5:30 AM CST)",
@@ -319,9 +320,6 @@ function initConfiguration() {
 /**
  * Handles toggling and height animation of the Zelle/Offline payment drawer
  */
-/**
- * Handles the step-by-step interactive checkout widget
- */
 function initCheckoutWidget() {
     const programBoxes = document.querySelectorAll(".select-program-grid .select-box");
     const paymentBoxes = document.querySelectorAll(".select-payment-grid .select-box");
@@ -359,13 +357,11 @@ function initCheckoutWidget() {
     const nextBtn3 = document.getElementById("wizard-next-3");
     const nextBtn3Zelle = document.getElementById("wizard-next-3-zelle");
     
-    const registerFormBtn = document.getElementById("wizard-register-form-btn");
-    
     // State variables
     let selectedProduct = "program"; // "program" or "session"
     let selectedPrice = 75;
     let selectedMethod = "card"; // "card" or "zelle"
-    let hasRegistered = false; // Tracks if Google Form link was clicked
+    let emailSubmitted = false; // Prevents duplicate email notifications
     
     // Initialize default timing
     if (!window.selectedTimeSlot && WORKSHOP_CONFIG.CLASS_TIMINGS.length > 0) {
@@ -395,8 +391,7 @@ function initCheckoutWidget() {
             if (fullnameInput) fullnameInput.value = "";
             if (emailInput) emailInput.value = "";
             if (phoneInput) phoneInput.value = "";
-            hasRegistered = false;
-            updateGoogleFormLink();
+            emailSubmitted = false;
         }
         if (fromStep <= 2) {
             if (step3) step3.classList.add("disabled-step");
@@ -406,38 +401,92 @@ function initCheckoutWidget() {
         }
     }
     
-    function updateGoogleFormLink() {
-        if (!registerFormBtn) return;
-        
+    function updateContactValidation() {
         const nameVal = fullnameInput ? fullnameInput.value.trim() : "";
         const emailVal = emailInput ? emailInput.value.trim() : "";
         const phoneVal = phoneInput ? phoneInput.value.trim() : "";
         
-        // If all fields are filled, enable the google form link button
+        // Enable Next button if all fields are filled
         if (nameVal && emailVal && phoneVal) {
-            registerFormBtn.style.pointerEvents = "auto";
-            registerFormBtn.style.opacity = "1";
-            
-            // Build Google Form URL pre-filled parameters:
-            // entry.373348819 = Full Name
-            // entry.1290361800 = Email
-            // entry.831678222 = Phone/WhatsApp Number
-            const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSem65n_cRAdejsrYFIoJuiABc7cGRs4qd6qLS7nE7E7nw5FwA/viewform";
-            const prefilledUrl = `${baseUrl}?usp=pp_url&entry.373348819=${encodeURIComponent(nameVal)}&entry.1290361800=${encodeURIComponent(emailVal)}&entry.831678222=${encodeURIComponent(phoneVal)}`;
-            
-            registerFormBtn.setAttribute("href", prefilledUrl);
+            if (nextBtn2) {
+                nextBtn2.disabled = false;
+                nextBtn2.classList.remove("btn-secondary");
+                nextBtn2.classList.add("btn-primary");
+            }
         } else {
-            // Otherwise, disable the button
-            registerFormBtn.style.pointerEvents = "none";
-            registerFormBtn.style.opacity = "0.6";
-            registerFormBtn.setAttribute("href", "#");
+            if (nextBtn2) {
+                nextBtn2.disabled = true;
+                nextBtn2.classList.add("btn-secondary");
+                nextBtn2.classList.remove("btn-primary");
+            }
+        }
+    }
+    
+    // Send email notification to business email via Web3Forms
+    async function sendWeb3FormsSubmission(paymentMethod) {
+        if (emailSubmitted) return; // Skip if already submitted for this booking
+        
+        const accessKey = WORKSHOP_CONFIG.WEB3FORMS_ACCESS_KEY;
+        if (!accessKey || accessKey.includes("YOUR_WEB3FORMS_ACCESS_KEY")) {
+            console.warn("Web3Forms Access Key is not configured. Email notification skipped.");
+            return;
+        }
+        
+        const nameVal = (fullnameInput ? fullnameInput.value.trim() : "") || "N/A";
+        const emailVal = (emailInput ? emailInput.value.trim() : "") || "N/A";
+        const phoneVal = (phoneInput ? phoneInput.value.trim() : "") || "N/A";
+        
+        let planDetails = "";
+        if (selectedProduct === "program") {
+            const startStr = currentWorkshop ? currentWorkshop.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "";
+            planDetails = `21 Days Online Program (starts ${startStr})`;
+        } else {
+            const dateShort = window.selectedDate ? window.selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "N/A";
+            planDetails = `Individual Session on ${dateShort}`;
+        }
+        
+        const timingVal = window.selectedTimeSlot || "N/A";
+        const subjectText = `New Booking: ${nameVal} - ${planDetails}`;
+        
+        const formData = {
+            access_key: accessKey,
+            subject: subjectText,
+            from_name: "Yogam World Website",
+            "Full Name": nameVal,
+            "Email Address": emailVal,
+            "Phone / WhatsApp Number": phoneVal,
+            "Plan Selected": planDetails,
+            "Timing Slot": timingVal,
+            "Payment Method Choice": paymentMethod.toUpperCase(),
+            "Amount": `$${selectedPrice}`,
+            "Date of Booking": new Date().toLocaleString("en-US", { timeZone: "America/New_York" }) + " EST"
+        };
+        
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            if (result.success) {
+                console.log("Booking email successfully sent via Web3Forms.");
+                emailSubmitted = true;
+            } else {
+                console.error("Web3Forms Submission failed:", result);
+            }
+        } catch (err) {
+            console.error("Error submitting Web3Forms:", err);
         }
     }
     
     // Bind change listeners to input fields
-    if (fullnameInput) fullnameInput.addEventListener("input", updateGoogleFormLink);
-    if (emailInput) emailInput.addEventListener("input", updateGoogleFormLink);
-    if (phoneInput) phoneInput.addEventListener("input", updateGoogleFormLink);
+    if (fullnameInput) fullnameInput.addEventListener("input", updateContactValidation);
+    if (emailInput) emailInput.addEventListener("input", updateContactValidation);
+    if (phoneInput) phoneInput.addEventListener("input", updateContactValidation);
     
     function renderTimingSelector() {
         if (!timingSelectWrapper) return;
@@ -536,7 +585,7 @@ function initCheckoutWidget() {
             } else {
                 nextBtn1.disabled = false;
                 nextBtn1.style.opacity = "1";
-                nextBtn1.innerHTML = `Next: Complete Registration <i class="fa-solid fa-arrow-right"></i>`;
+                nextBtn1.innerHTML = `Next: Complete Contact Details <i class="fa-solid fa-arrow-right"></i>`;
             }
         }
         
@@ -652,17 +701,6 @@ function initCheckoutWidget() {
         });
     }
     
-    if (registerFormBtn) {
-        registerFormBtn.addEventListener("click", () => {
-            hasRegistered = true;
-            if (nextBtn2) {
-                nextBtn2.disabled = false;
-                nextBtn2.classList.remove("btn-secondary");
-                nextBtn2.classList.add("btn-primary");
-            }
-        });
-    }
-    
     if (nextBtn2) {
         nextBtn2.addEventListener("click", () => {
             if (step3) {
@@ -673,8 +711,18 @@ function initCheckoutWidget() {
         });
     }
     
+    if (checkoutCardBtn) {
+        checkoutCardBtn.addEventListener("click", () => {
+            sendWeb3FormsSubmission("card");
+            if (step4) {
+                step4.classList.remove("disabled-step");
+            }
+        });
+    }
+    
     if (nextBtn3) {
         nextBtn3.addEventListener("click", () => {
+            sendWeb3FormsSubmission("card");
             if (step4) {
                 step4.classList.remove("disabled-step");
                 const targetOffset = getAbsoluteOffset(step4);
@@ -685,6 +733,7 @@ function initCheckoutWidget() {
     
     if (nextBtn3Zelle) {
         nextBtn3Zelle.addEventListener("click", () => {
+            sendWeb3FormsSubmission("zelle");
             if (step4) {
                 step4.classList.remove("disabled-step");
                 const targetOffset = getAbsoluteOffset(step4);
