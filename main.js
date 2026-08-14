@@ -25,7 +25,7 @@ const WORKSHOP_CONFIG = {
     facebookUrl: "https://www.facebook.com/DurgaDevi.Yogam",
     whatsappUrl: "https://chat.whatsapp.com/Efxpkub1eLLBC4aKQnhTdJ?mode=gi_t",
     whatsappSocialUrl: "https://wa.me/18045168515",
-    WEB3FORMS_ACCESS_KEY: "YOUR_WEB3FORMS_ACCESS_KEY_HERE",
+    WEB3FORMS_ACCESS_KEY: "6fc4441e-1f94-4b0b-bdb0-2d275ad1f8e4",
     
     // General Workshop Variables
     timingText: "5:30 AM - 6:30 AM EST (4:30 AM - 5:30 AM CST)",
