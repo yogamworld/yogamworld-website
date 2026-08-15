@@ -1277,10 +1277,10 @@ img {
 }
 
 .zelle-email {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: var(--color-text-dark);
-    font-family: monospace;
-    word-break: break-all;
+    font-family: var(--font-body), sans-serif;
+    word-break: break-word;
 }
 
 /* Calendar info banner */
