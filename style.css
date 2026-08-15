@@ -30,8 +30,8 @@
     --font-body: 'Montserrat', system-ui, -apple-system, sans-serif;
     
     /* Layout Constants */
-    --header-height: 80px;
-    --header-height-scrolled: 70px;
+    --header-height: 100px;
+    --header-height-scrolled: 80px;
     --border-radius-sm: 8px;
     --border-radius-md: 16px;
     --border-radius-lg: 24px;
@@ -48,7 +48,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Offset for sticky header */
+    scroll-padding-top: 100px; /* Offset for sticky header */
 }
 
 body {
@@ -279,7 +279,7 @@ img {
 }
 
 .brand-logo-img {
-    height: 52px;
+    height: 72px;
     width: auto;
     object-fit: contain;
     transition: var(--transition-smooth);
@@ -290,7 +290,7 @@ img {
 }
 
 .site-header.scrolled .brand-logo-img {
-    height: 44px;
+    height: 56px;
 }
 
 
