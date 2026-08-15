@@ -110,10 +110,20 @@
         <section class="registration-section section-padding" id="register">
             <div class="container">
                 <!-- Upcoming Batches List -->
-                <div class="upcoming-batches-container rounded-card shadow-soft scroll-animate" style="margin-bottom: 40px; background-color: var(--color-white); border: 1px solid var(--color-border); padding: 30px;">
-                    <h3 class="upcoming-batches-title" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-text-dark); margin-bottom: 20px; text-align: center;"><i class="fa-regular fa-calendar-days" style="color: var(--color-sage);"></i> Upcoming Batch Dates</h3>
-                    <div class="batches-grid" id="upcoming-batches-grid">
-                        <!-- Dynamically generated upcoming batches -->
+                <div class="upcoming-batches-container rounded-card shadow-soft scroll-animate" style="margin-bottom: 40px; background-color: var(--color-white); border: 1px solid var(--color-border); padding: 30px; overflow: hidden;">
+                    <div class="upcoming-batches-layout">
+                        <div class="upcoming-batches-img-wrapper">
+                            <img src="assets/batches-yoga-banner.jpg" alt="Yoga Practice at Sunrise" class="upcoming-batches-img">
+                        </div>
+                        <div class="upcoming-batches-content">
+                            <h3 class="upcoming-batches-title" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-text-dark); margin: 0;"><i class="fa-regular fa-calendar-days" style="color: var(--color-sage);"></i> Upcoming Batch Dates</h3>
+                            <p style="font-size: 0.95rem; line-height: 1.6; color: var(--color-text-dark); margin: 0 0 5px 0;">
+                                View our scheduled online workshop batches below. August registrations are closed, and September, October, and November batches are open. You can select your preferred batch and secure your seat in the **Booking Wizard** below.
+                            </p>
+                            <div class="batches-grid-vertical" id="upcoming-batches-grid">
+                                <!-- Dynamically generated upcoming batches -->
+                            </div>
+                        </div>
                     </div>
                 </div>
 

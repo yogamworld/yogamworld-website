@@ -1118,7 +1118,7 @@ function initCalendar() {
 }
 
 /**
- * Calculates and dynamically renders the next 3 monthly batch dates for the workshop
+ * Calculates and dynamically renders the next 4 monthly batch dates for the workshop
  */
 function initUpcomingBatches() {
     const batchesGrid = document.getElementById("upcoming-batches-grid");
@@ -1133,7 +1133,7 @@ function initUpcomingBatches() {
     let batchesCount = 0;
     let monthOffset = 0;
     
-    while (batchesCount < 3) {
+    while (batchesCount < 4) {
         let checkMonth = currentMonth + monthOffset;
         let checkYear = currentYear;
         if (checkMonth > 11) {
@@ -1155,44 +1155,37 @@ function initUpcomingBatches() {
         const card = document.createElement("div");
         card.className = `batch-card ${isMissed ? 'closed' : 'open'}`;
         card.style.cssText = `
-            border: 2px solid ${isMissed ? 'var(--color-border)' : 'var(--color-sage-light)'};
+            border: 1px solid ${isMissed ? 'var(--color-border)' : 'var(--color-sage-light)'};
             background-color: ${isMissed ? 'var(--color-white)' : 'var(--color-sage-pale)'};
-            border-radius: var(--border-radius-md);
-            padding: 20px;
-            text-align: center;
-            opacity: ${isMissed ? '0.7' : '1'};
+            border-radius: var(--border-radius-sm);
+            padding: 15px 20px;
+            opacity: ${isMissed ? '0.75' : '1'};
             transition: var(--transition-smooth);
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 120px;
         `;
         
         card.innerHTML = `
             <span class="batch-status-badge" style="
                 position: absolute;
-                top: 12px;
-                right: 12px;
-                font-size: 0.7rem;
+                top: 15px;
+                right: 20px;
+                font-size: 0.65rem;
                 font-weight: 700;
-                padding: 3px 8px;
-                border-radius: 20px;
+                padding: 2px 8px;
+                border-radius: 12px;
                 background-color: ${isMissed ? '#e9ecef' : 'var(--color-sage)'};
                 color: ${isMissed ? '#6c757d' : 'var(--color-pure-white)'};
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
             ">${isMissed ? 'Closed' : 'Open'}</span>
-            <h4 style="font-family: var(--font-primary); font-size: 1.25rem; color: var(--color-text-dark); margin: 0 0 8px 0; text-align: left;">${batchName}</h4>
-            <p style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-dark); margin-bottom: 6px; text-align: left;">${dateRangeStr}</p>
-            <p style="font-size: 0.8rem; color: var(--color-text-muted); margin: 0 0 12px 0; text-align: left;">
-                ${isMissed ? 'Registration closed for this batch' : `Register by ${formatDateLong(deadline)}`}
-            </p>
-            ${isMissed ? '' : `
-            <a href="${WORKSHOP_CONFIG.GOOGLE_FORM_URL}" target="_blank" class="btn btn-secondary btn-small" style="margin-top: 15px; width: fit-content; align-self: flex-start; padding: 8px 20px; font-size: 0.8rem;">
-                Register for this Batch <i class="fa-solid fa-external-link"></i>
-            </a>
-            `}
+            <h4 style="font-family: var(--font-primary); font-size: 1.15rem; color: var(--color-text-dark); margin: 0 0 4px 0; text-align: left;">${batchName}</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-text-dark);">${dateRangeStr}</span>
+                ${isMissed ? '' : `<span style="font-size: 0.75rem; color: var(--color-text-muted);">• Register by ${formatDateLong(deadline)}</span>`}
+            </div>
         `;
         
         batchesGrid.appendChild(card);
