@@ -690,6 +690,44 @@ function initCheckoutWidget() {
         updateCheckoutView();
     };
     
+    window.selectBatch = function(startDate, endDate, deadline) {
+        // 1. Select the 21-Day Live Program option
+        const programBox = document.querySelector('.select-program-grid .select-box[data-product="program"]');
+        const sessionBox = document.querySelector('.select-program-grid .select-box[data-product="session"]');
+        if (programBox && sessionBox) {
+            sessionBox.classList.remove("active");
+            programBox.classList.add("active");
+            selectedProduct = "program";
+            selectedPrice = parseInt(programBox.getAttribute("data-price"), 10) || 75;
+        }
+        
+        // 2. Set the currentWorkshop variable to the custom batch dates
+        currentWorkshop = {
+            startDate: startDate,
+            endDate: endDate,
+            deadline: deadline,
+            status: "open"
+        };
+        
+        // 3. Reset session date selection
+        window.selectedDate = null;
+        if (window.renderCalendar) window.renderCalendar();
+        
+        // 4. Update the view
+        lockDownstreamSteps(1);
+        updateCheckoutView();
+        
+        // 5. Scroll down to Step 1 of the Booking Wizard
+        const wizardEl = document.getElementById("register");
+        if (wizardEl) {
+            const targetPosition = wizardEl.getBoundingClientRect().top + window.scrollY - 100;
+            window.scrollTo({
+                top: targetPosition,
+                behavior: "smooth"
+            });
+        }
+    };
+    
     // Bind Wizard Navigation Buttons
     if (nextBtn1) {
         nextBtn1.addEventListener("click", () => {
@@ -1165,6 +1203,7 @@ function initUpcomingBatches() {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            ${isMissed ? '' : 'cursor: pointer;'}
         `;
         
         card.innerHTML = `
@@ -1187,6 +1226,28 @@ function initUpcomingBatches() {
                 ${isMissed ? '' : `<span style="font-size: 0.75rem; color: var(--color-text-muted);">• Register by ${formatDateLong(deadline)}</span>`}
             </div>
         `;
+        
+        if (!isMissed) {
+            // Hover animations
+            card.addEventListener("mouseenter", () => {
+                card.style.borderColor = "var(--color-sage)";
+                card.style.boxShadow = "var(--shadow-soft)";
+                card.style.transform = "translateY(-1px)";
+            });
+            card.addEventListener("mouseleave", () => {
+                card.style.borderColor = "var(--color-sage-light)";
+                card.style.boxShadow = "none";
+                card.style.transform = "none";
+            });
+            
+            // Selection trigger on click
+            card.addEventListener("click", () => {
+                const batchEndDate = new Date(firstMonday.getFullYear(), firstMonday.getMonth(), firstMonday.getDate() + 20);
+                if (window.selectBatch) {
+                    window.selectBatch(firstMonday, batchEndDate, deadline);
+                }
+            });
+        }
         
         batchesGrid.appendChild(card);
         
