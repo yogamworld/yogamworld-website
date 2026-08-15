@@ -1203,6 +1203,7 @@ function initUpcomingBatches() {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            ${isMissed ? '' : 'cursor: pointer;'}
         `;
         
         card.innerHTML = `
@@ -1220,11 +1221,38 @@ function initUpcomingBatches() {
                 letter-spacing: 0.5px;
             ">${isMissed ? 'Closed' : 'Open'}</span>
             <h4 style="font-family: var(--font-primary); font-size: 1.15rem; color: var(--color-text-dark); margin: 0 0 4px 0; text-align: left;">${batchName}</h4>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: ${isMissed ? '0' : '10px'};">
                 <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-text-dark);">${dateRangeStr}</span>
                 ${isMissed ? '' : `<span style="font-size: 0.75rem; color: var(--color-text-muted);">• Register by ${formatDateLong(deadline)}</span>`}
             </div>
+            ${isMissed ? '' : `
+            <button class="btn btn-secondary btn-small" style="margin-top: 5px; width: fit-content; padding: 6px 14px; font-size: 0.75rem; border-radius: var(--border-radius-sm); pointer-events: none; align-self: flex-start;">
+                Select Batch <i class="fa-solid fa-arrow-down" style="margin-left: 4px;"></i>
+            </button>
+            `}
         `;
+        
+        if (!isMissed) {
+            // Hover animations
+            card.addEventListener("mouseenter", () => {
+                card.style.borderColor = "var(--color-sage)";
+                card.style.boxShadow = "var(--shadow-soft)";
+                card.style.transform = "translateY(-1px)";
+            });
+            card.addEventListener("mouseleave", () => {
+                card.style.borderColor = "var(--color-sage-light)";
+                card.style.boxShadow = "none";
+                card.style.transform = "none";
+            });
+            
+            // Selection trigger on click
+            card.addEventListener("click", () => {
+                const batchEndDate = new Date(firstMonday.getFullYear(), firstMonday.getMonth(), firstMonday.getDate() + 20);
+                if (window.selectBatch) {
+                    window.selectBatch(firstMonday, batchEndDate, deadline);
+                }
+            });
+        }
         
         batchesGrid.appendChild(card);
         
