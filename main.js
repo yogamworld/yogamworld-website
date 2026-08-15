@@ -600,7 +600,7 @@ function initCheckoutWidget() {
         // Update Zelle Memo
         if (zelleMemoText) {
             if (selectedProduct === "program") {
-                zelleMemoText.textContent = `Yogam Program - ${window.selectedTimeSlot}`;
+                zelleMemoText.textContent = `21-day Online Workshop - ${window.selectedTimeSlot}`;
             } else if (window.selectedDate) {
                 const dateShort = window.selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" });
                 zelleMemoText.textContent = `Yogam Drop-in - ${dateShort} @ ${window.selectedTimeSlot}`;
