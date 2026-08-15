@@ -717,12 +717,12 @@ function initCheckoutWidget() {
         lockDownstreamSteps(1);
         updateCheckoutView();
         
-        // 5. Scroll down to Step 1 of the Booking Wizard
-        const wizardEl = document.getElementById("register");
-        if (wizardEl) {
-            const targetPosition = wizardEl.getBoundingClientRect().top + window.scrollY - 100;
+        // 5. Unlock Step 2 and scroll directly to it!
+        if (step2) {
+            step2.classList.remove("disabled-step");
+            const targetOffset = getAbsoluteOffset(step2);
             window.scrollTo({
-                top: targetPosition,
+                top: targetOffset,
                 behavior: "smooth"
             });
         }
