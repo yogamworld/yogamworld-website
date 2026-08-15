@@ -718,11 +718,11 @@ function initCheckoutWidget() {
         updateCheckoutView();
         
         // 5. Scroll down to Step 1 of the Booking Wizard
-        const wizardEl = document.getElementById("register");
-        if (wizardEl) {
-            const targetPosition = wizardEl.getBoundingClientRect().top + window.scrollY - 100;
+        const step1 = document.getElementById("checkout-step-1");
+        if (step1) {
+            const targetOffset = getAbsoluteOffset(step1);
             window.scrollTo({
-                top: targetPosition,
+                top: targetOffset,
                 behavior: "smooth"
             });
         }
