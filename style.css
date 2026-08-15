@@ -1185,7 +1185,7 @@ img {
     border-color: var(--color-sage);
 }
 
-.timing-select-wrapper::after {
+.timing-select-wrapper:has(select)::after {
     content: '\f078';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
