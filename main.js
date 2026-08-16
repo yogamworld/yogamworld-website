@@ -606,10 +606,11 @@ function initCheckoutWidget() {
         // Update Zelle Memo
         if (zelleMemoText) {
             if (selectedProduct === "program") {
-                zelleMemoText.textContent = `21-day Online Workshop - ${window.selectedTimeSlot}`;
+                const monthName = currentWorkshop ? currentWorkshop.startDate.toLocaleDateString("en-US", { month: "short" }) : "";
+                zelleMemoText.textContent = `Workshop - ${monthName} Batch`;
             } else if (window.selectedDate) {
                 const dateShort = window.selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-                zelleMemoText.textContent = `Yogam Drop-in - ${dateShort} @ ${window.selectedTimeSlot}`;
+                zelleMemoText.textContent = `Yoga Drop-in - ${dateShort}`;
             } else {
                 zelleMemoText.textContent = "Select a date first";
             }
