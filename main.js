@@ -439,7 +439,7 @@ function initCheckoutWidget() {
         let planDetails = "";
         if (selectedProduct === "program") {
             const startStr = currentWorkshop ? currentWorkshop.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "";
-            planDetails = `21 Days Online Program (starts ${startStr})`;
+            planDetails = `21-day Online Workshop (starts ${startStr})`;
         } else {
             const dateShort = window.selectedDate ? window.selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "N/A";
             planDetails = `Individual Session on ${dateShort}`;
@@ -539,7 +539,7 @@ function initCheckoutWidget() {
         
         if (selectedProduct === "program") {
             const startStr = currentWorkshop ? currentWorkshop.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "";
-            productName = `21 Days Online Program (starts ${startStr})`;
+            productName = `21-day Online Workshop (starts ${startStr})`;
             
             if (selectedDateText) {
                 selectedDateText.textContent = `Full 21-Day Batch (starts ${currentWorkshop ? formatDateFriendly(currentWorkshop.startDate) : ''})`;
@@ -596,6 +596,12 @@ function initCheckoutWidget() {
         if (cardSummaryName) cardSummaryName.textContent = productName;
         if (cardSummaryPrice) cardSummaryPrice.textContent = `$${selectedPrice}`;
         if (zelleSummaryPrice) zelleSummaryPrice.textContent = `$${selectedPrice}`;
+        
+        // Update Step 2 Summary Badge
+        const step2SummaryText = document.getElementById("wizard-selected-summary-text");
+        if (step2SummaryText) {
+            step2SummaryText.textContent = `Selected: ${productName} @ ${window.selectedTimeSlot}`;
+        }
         
         // Update Zelle Memo
         if (zelleMemoText) {
