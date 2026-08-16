@@ -1284,6 +1284,12 @@ img {
     word-break: break-word;
 }
 
+.btn-copy-zelle:hover {
+    border-color: var(--color-sage) !important;
+    color: var(--color-sage) !important;
+    background-color: var(--color-sage-pale) !important;
+}
+
 /* Calendar info banner */
 .calendar-info-banner {
     display: flex;

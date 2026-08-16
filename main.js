@@ -1261,3 +1261,29 @@ function initUpcomingBatches() {
         monthOffset++;
     }
 }
+
+// Global Zelle Copy Helper Function
+window.copyZelleText = function(elementId, buttonEl) {
+    const textEl = document.getElementById(elementId);
+    if (!textEl) return;
+    const text = textEl.textContent.trim();
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const icon = buttonEl.querySelector('i');
+        if (icon) {
+            icon.className = "fa-solid fa-check";
+            icon.style.color = "var(--color-sage)";
+            buttonEl.style.borderColor = "var(--color-sage)";
+            buttonEl.style.backgroundColor = "var(--color-sage-pale)";
+            
+            setTimeout(() => {
+                icon.className = "fa-regular fa-copy";
+                icon.style.color = "";
+                buttonEl.style.borderColor = "";
+                buttonEl.style.backgroundColor = "";
+            }, 2000);
+        }
+    }).catch(err => {
+        console.error("Failed to copy text: ", err);
+    });
+};

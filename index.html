@@ -343,13 +343,19 @@
                                     <h4>Zelle Payment Details</h4>
                                     <div class="zelle-details">
                                         <p class="zelle-instruction-text" style="margin: 0 0 12px 0;">Please send exactly <strong class="zelle-price-amount" id="zelle-summary-price">$75</strong> through Zelle to:</p>
-                                        <div class="zelle-email-box">
+                                        <div class="zelle-email-box" style="position: relative; padding-right: 65px;">
                                             <span class="zelle-label">Zelle Registered Email</span>
-                                            <strong class="zelle-email user-selectable">yogam.world@gmail.com</strong>
+                                            <strong class="zelle-email user-selectable" id="zelle-email-val">yogam.world@gmail.com</strong>
+                                            <button type="button" class="btn-copy-zelle" onclick="copyZelleText('zelle-email-val', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); border: 1px solid var(--color-border); background-color: var(--color-white); border-radius: var(--border-radius-sm); color: var(--color-text-muted); cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth);" title="Copy to clipboard">
+                                                <i class="fa-regular fa-copy"></i>
+                                            </button>
                                         </div>
-                                        <div class="zelle-email-box" style="margin-top: 12px;">
+                                        <div class="zelle-email-box" style="margin-top: 12px; position: relative; padding-right: 65px;">
                                             <span class="zelle-label">Include Zelle Memo/Note:</span>
                                             <strong class="zelle-email user-selectable" id="zelle-memo-text" style="color: var(--color-lavender); font-weight: 700;">21-day Online Workshop</strong>
+                                            <button type="button" class="btn-copy-zelle" onclick="copyZelleText('zelle-memo-text', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); border: 1px solid var(--color-border); background-color: var(--color-white); border-radius: var(--border-radius-sm); color: var(--color-text-muted); cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth);" title="Copy to clipboard">
+                                                <i class="fa-regular fa-copy"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
