@@ -1278,12 +1278,18 @@ img {
 }
 
 .zelle-email {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--color-text-dark);
     font-family: SFMono-Regular, Consolas, Monaco, 'Andale Mono', monospace;
     font-weight: 500;
     letter-spacing: -0.5px;
     word-break: break-word;
+}
+
+@media (max-width: 480px) {
+    .zelle-email {
+        font-size: 0.88rem;
+    }
 }
 
 .btn-copy-zelle {
