@@ -1277,7 +1277,7 @@ window.copyZelleText = function(elementId, buttonEl) {
             buttonEl.style.backgroundColor = "var(--color-sage-pale)";
             
             setTimeout(() => {
-                icon.className = "fa-regular fa-copy";
+                icon.className = "fa-solid fa-copy";
                 icon.style.color = "";
                 buttonEl.style.borderColor = "";
                 buttonEl.style.backgroundColor = "";

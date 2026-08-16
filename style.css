@@ -1284,10 +1284,58 @@ img {
     word-break: break-word;
 }
 
+.btn-copy-zelle {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid var(--color-border);
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+    font-size: 1.15rem;
+}
+
 .btn-copy-zelle:hover {
     border-color: var(--color-sage) !important;
-    color: var(--color-sage) !important;
+    color: var(--color-sage-dark) !important;
     background-color: var(--color-sage-pale) !important;
+    box-shadow: var(--shadow-soft) !important;
+    transform: translateY(-50%) scale(1.05) !important;
+}
+
+.zelle-layout-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 20px;
+    align-items: stretch;
+    margin-top: 15px;
+}
+
+.zelle-qr-box {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    padding: 15px;
+    background-color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .zelle-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 }
 
 /* Calendar info banner */
