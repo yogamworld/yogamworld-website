@@ -2047,6 +2047,7 @@ img {
     .hero-actions {
         flex-direction: column;
         width: 100%;
+        margin-bottom: 45px !important;
     }
     
     .hero-actions .btn {
