@@ -682,9 +682,12 @@ function initCheckoutWidget() {
                 checkoutCardBtn.innerHTML = `Registration Closed <i class="fa-solid fa-lock"></i>`;
             } else {
                 checkoutCardBtn.classList.remove("disabled");
-                const stripeUrl = selectedProduct === "program" 
+                let stripeUrl = selectedProduct === "program" 
                     ? WORKSHOP_CONFIG.STRIPE_PAYMENT_URL 
                     : WORKSHOP_CONFIG.STRIPE_SINGLE_SESSION_URL;
+                if (appliedPromoCode && stripeUrl) {
+                    stripeUrl += (stripeUrl.includes("?") ? "&" : "?") + `prefilled_promo_code=${appliedPromoCode}`;
+                }
                 checkoutCardBtn.setAttribute("href", stripeUrl || "#");
                 checkoutCardBtn.innerHTML = `Pay Securely via Card <i class="fa-solid fa-credit-card"></i>`;
             }
