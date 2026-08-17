@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Style -->
-    <link rel="stylesheet" href="style.css?v=17.0">
+    <link rel="stylesheet" href="style.css?v=18.0">
 </head>
 <body>
 
@@ -290,6 +290,16 @@
                                 </p>
                             </div>
                             
+                            <!-- Promo Code Area -->
+                            <div class="promo-code-container" style="margin-bottom: 24px; padding: 16px; background-color: var(--color-white); border: 1px dashed var(--color-border); border-radius: var(--border-radius-sm); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 180px;">
+                                    <label for="wizard-promo" style="font-size: 0.85rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Have a Promo Code?</label>
+                                    <input type="text" id="wizard-promo" placeholder="e.g. YOGA10" style="width: 100%; padding: 10px 14px; border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); font-family: var(--font-body); font-size: 0.9rem; text-transform: uppercase;">
+                                </div>
+                                <button type="button" class="btn btn-secondary" id="btn-apply-promo" style="padding: 10px 24px; font-size: 0.9rem; font-weight: 600; align-self: flex-end; height: 42px; margin: 0; min-width: 100px;">Apply</button>
+                                <div id="promo-status-msg" style="width: 100%; font-size: 0.82rem; font-weight: 600; margin-top: 4px; display: none;"></div>
+                            </div>
+                            
                             <div class="selection-grid select-payment-grid" style="margin-bottom: 24px;">
                                 <!-- Option 1: Credit Card -->
                                 <div class="select-box active" data-method="card">
@@ -318,13 +328,27 @@
                                     <h4>Order Summary</h4>
                                     <div class="summary-row">
                                         <span id="card-summary-name">21-day Online Workshop</span>
+                                        <strong id="card-summary-price-base">$75</strong>
+                                    </div>
+                                    <div class="summary-row" id="summary-row-discount" style="display: none; color: #2e7d32; font-weight: 500;">
+                                        <span>Discount (PROMO)</span>
+                                        <strong id="card-summary-discount">-$0</strong>
+                                    </div>
+                                    <div class="summary-row" id="summary-row-total" style="border-top: 1px solid var(--color-border); padding-top: 8px; margin-top: 8px;">
+                                        <span style="font-weight: 600;">Total:</span>
                                         <strong id="card-summary-price">$75</strong>
                                     </div>
                                 </div>
                                 <div class="checkout-cta-wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-                                    <a href="#" target="_blank" class="btn btn-primary btn-large btn-stripe-link" id="checkout-card-btn">
-                                        Pay Securely via Card <i class="fa-solid fa-credit-card"></i>
-                                    </a>
+                                    <div style="flex: 1; min-width: 250px;">
+                                        <a href="#" target="_blank" class="btn btn-primary btn-large btn-stripe-link" id="checkout-card-btn" style="width: 100%; text-align: center; margin-bottom: 0;">
+                                            Pay Securely via Card <i class="fa-solid fa-credit-card"></i>
+                                        </a>
+                                        <p id="stripe-promo-helper" style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 8px; display: none; line-height: 1.4;">
+                                            <i class="fa-solid fa-circle-info" style="color: var(--color-sage); margin-right: 4px;"></i> 
+                                            Applying a promo code? Remember to enter <strong><span id="stripe-promo-code-name"></span></strong> on the Stripe checkout page to get your discount.
+                                        </p>
+                                    </div>
                                     <button type="button" class="btn btn-secondary" id="wizard-next-3" style="padding: 12px 30px;">
                                         Next: Onboarding <i class="fa-solid fa-arrow-right"></i>
                                     </button>
@@ -685,6 +709,6 @@
     </footer>
 
     <!-- Core Script -->
-    <script src="main.js?v=14.0"></script>
+    <script src="main.js?v=15.0"></script>
 </body>
 </html>

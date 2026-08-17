@@ -41,7 +41,14 @@ const WORKSHOP_CONFIG = {
     REGISTRATION_FORCE_CLOSED: false,
     
     // Optional static ISO string override to set a custom deadline (e.g. "2026-09-05T23:59:59")
-    REGISTRATION_DEADLINE_OVERRIDE: null
+    REGISTRATION_DEADLINE_OVERRIDE: null,
+    
+    // Promo Codes Configuration (keys must be uppercase)
+    PROMO_CODES: {
+        "YOGA10": { type: "percentage", value: 10 },
+        "YOGAM20": { type: "fixed", value: 20 },
+        "EARLYBIRD": { type: "fixed", value: 15 }
+    }
 };
 
 // Global active workshop program state
@@ -362,6 +369,8 @@ function initCheckoutWidget() {
     let selectedPrice = 75;
     let selectedMethod = "card"; // "card" or "zelle"
     let emailSubmitted = false; // Prevents duplicate email notifications
+    let appliedPromoCode = "";
+    let discountAmount = 0;
     
     // Initialize default timing
     if (!window.selectedTimeSlot && WORKSHOP_CONFIG.CLASS_TIMINGS.length > 0) {
@@ -523,6 +532,56 @@ function initCheckoutWidget() {
         }
     }
     
+    function calculatePriceWithPromo() {
+        let baseVal = selectedProduct === "program" ? 75 : 15;
+        const programBox = document.querySelector('.select-box[data-product="program"]');
+        const sessionBox = document.querySelector('.select-box[data-product="session"]');
+        if (selectedProduct === "program" && programBox) {
+            baseVal = parseInt(programBox.getAttribute("data-price"), 10) || 75;
+        } else if (selectedProduct === "session" && sessionBox) {
+            baseVal = parseInt(sessionBox.getAttribute("data-price"), 10) || 15;
+        }
+        
+        if (appliedPromoCode && WORKSHOP_CONFIG.PROMO_CODES[appliedPromoCode]) {
+            const promo = WORKSHOP_CONFIG.PROMO_CODES[appliedPromoCode];
+            if (promo.type === "percentage") {
+                discountAmount = Math.round(baseVal * (promo.value / 100));
+            } else if (promo.type === "fixed") {
+                discountAmount = promo.value;
+            }
+            selectedPrice = Math.max(0, baseVal - discountAmount);
+        } else {
+            discountAmount = 0;
+            selectedPrice = baseVal;
+        }
+        
+        const basePriceText = document.getElementById("card-summary-price-base");
+        const discountRow = document.getElementById("summary-row-discount");
+        const discountValText = document.getElementById("card-summary-discount");
+        const totalValText = document.getElementById("card-summary-price");
+        const zelleInstructionPrice = document.getElementById("zelle-summary-price");
+        const stripePromoHelper = document.getElementById("stripe-promo-helper");
+        const stripePromoCodeName = document.getElementById("stripe-promo-code-name");
+        
+        if (basePriceText) basePriceText.textContent = `$${baseVal}`;
+        
+        if (discountAmount > 0) {
+            if (discountRow) discountRow.style.display = "flex";
+            if (discountValText) discountValText.textContent = `-$${discountAmount}`;
+            if (totalValText) totalValText.textContent = `$${selectedPrice}`;
+            if (stripePromoHelper) stripePromoHelper.style.display = "block";
+            if (stripePromoCodeName) stripePromoCodeName.textContent = appliedPromoCode;
+        } else {
+            if (discountRow) discountRow.style.display = "none";
+            if (totalValText) totalValText.textContent = `$${baseVal}`;
+            if (stripePromoHelper) stripePromoHelper.style.display = "none";
+        }
+        
+        if (zelleInstructionPrice) {
+            zelleInstructionPrice.textContent = `$${selectedPrice}`;
+        }
+    }
+    
     function updateCheckoutView() {
         const isClosed = WORKSHOP_CONFIG.REGISTRATION_FORCE_CLOSED || currentWorkshop.status === "closed";
         
@@ -594,8 +653,7 @@ function initCheckoutWidget() {
         
         // Update summary text
         if (cardSummaryName) cardSummaryName.textContent = productName;
-        if (cardSummaryPrice) cardSummaryPrice.textContent = `$${selectedPrice}`;
-        if (zelleSummaryPrice) zelleSummaryPrice.textContent = `$${selectedPrice}`;
+        calculatePriceWithPromo();
         
         // Update Step 2 Summary Badge
         const step2SummaryText = document.getElementById("wizard-selected-summary-text");
@@ -783,6 +841,54 @@ function initCheckoutWidget() {
                 step4.classList.remove("disabled-step");
                 const targetOffset = getAbsoluteOffset(step4);
                 window.scrollTo({ top: targetOffset, behavior: "smooth" });
+            }
+        });
+    }
+    
+    // Promo Code Apply Button Click
+    const promoInput = document.getElementById("wizard-promo");
+    const promoApplyBtn = document.getElementById("btn-apply-promo");
+    const promoStatusMsg = document.getElementById("promo-status-msg");
+    
+    if (promoApplyBtn && promoInput) {
+        promoApplyBtn.addEventListener("click", () => {
+            const enteredCode = promoInput.value.trim().toUpperCase();
+            if (!enteredCode) {
+                appliedPromoCode = "";
+                discountAmount = 0;
+                if (promoStatusMsg) {
+                    promoStatusMsg.style.display = "none";
+                }
+                updateCheckoutView();
+                return;
+            }
+            
+            if (WORKSHOP_CONFIG.PROMO_CODES[enteredCode]) {
+                appliedPromoCode = enteredCode;
+                if (promoStatusMsg) {
+                    promoStatusMsg.style.color = "#2e7d32"; // Success green
+                    const promo = WORKSHOP_CONFIG.PROMO_CODES[enteredCode];
+                    const discountText = promo.type === "percentage" ? `${promo.value}%` : `$${promo.value}`;
+                    promoStatusMsg.textContent = `Promo code "${enteredCode}" applied! (${discountText} off)`;
+                    promoStatusMsg.style.display = "block";
+                }
+            } else {
+                appliedPromoCode = "";
+                discountAmount = 0;
+                if (promoStatusMsg) {
+                    promoStatusMsg.style.color = "var(--color-earth)"; // Error red
+                    promoStatusMsg.textContent = `Invalid promo code. Please check and try again.`;
+                    promoStatusMsg.style.display = "block";
+                }
+            }
+            updateCheckoutView();
+        });
+        
+        // Also support pressing Enter key in the input field
+        promoInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                promoApplyBtn.click();
             }
         });
     }
