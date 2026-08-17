@@ -708,7 +708,36 @@
         </div>
     </footer>
 
+    <!-- Stripe Success Modal Popup -->
+    <div id="stripe-success-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(18, 30, 23, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; opacity: 0; transition: opacity 0.4s ease;">
+        <div style="background-color: var(--color-pure-white); border-radius: var(--border-radius-md); max-width: 500px; width: 100%; padding: 40px 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); border: 1px solid var(--color-border); text-align: center; position: relative; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <button type="button" id="close-success-modal" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--color-text-muted); cursor: pointer; transition: color 0.2s;" aria-label="Close popup">&times;</button>
+            
+            <div style="width: 70px; height: 70px; background-color: var(--color-sage-pale); color: var(--color-sage); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 20px auto; border: 2px solid var(--color-sage-light);">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            
+            <h3 style="font-family: var(--font-heading); color: var(--color-text-dark); font-size: 1.8rem; margin-bottom: 12px;">Payment Successful!</h3>
+            <p style="font-size: 0.98rem; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 24px;">
+                Thank you for your payment! Your registration is complete. Please join our onboarding WhatsApp group below to receive your class links, guidelines, and updates.
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                <a href="https://chat.whatsapp.com/Efxpkub1eLLBC4aKQnhTdJ?mode=gi_t" target="_blank" class="btn btn-primary btn-large" style="width: 100%; text-align: center; margin: 0; padding: 14px 20px; justify-content: center; display: inline-flex; align-items: center; gap: 8px;">
+                    Join WhatsApp Group <i class="fa-brands fa-whatsapp" style="font-size: 1.25rem;"></i>
+                </a>
+                <button type="button" id="btn-success-modal-close-action" class="btn btn-secondary" style="width: 100%; padding: 12px 20px; border: 1px solid var(--color-border); background-color: var(--color-white); color: var(--color-text-dark); border-radius: var(--border-radius-sm); font-weight: 600; font-family: var(--font-body); font-size: 0.95rem; cursor: pointer;">
+                    Close
+                </button>
+            </div>
+            
+            <p style="font-size: 0.8rem; color: var(--color-text-muted); margin: 0;">
+                If you have any questions, call or WhatsApp us at <a href="tel:+18045168515" class="config-text-phone" style="font-weight: 600; color: var(--color-sage);">+1 804-516-8515</a>.
+            </p>
+        </div>
+    </div>
+
     <!-- Core Script -->
-    <script src="main.js?v=15.0"></script>
+    <script src="main.js?v=16.0"></script>
 </body>
 </html>

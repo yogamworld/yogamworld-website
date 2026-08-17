@@ -893,8 +893,51 @@ function initCheckoutWidget() {
         });
     }
     
+    // Check if redirecting back from a successful Stripe payment
+    function checkStripePaymentSuccess() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("payment") === "success") {
+            const modal = document.getElementById("stripe-success-modal");
+            const closeBtn = document.getElementById("close-success-modal");
+            const closeActionBtn = document.getElementById("btn-success-modal-close-action");
+            
+            if (modal) {
+                // Show modal
+                modal.style.display = "flex";
+                // Trigger reflow for fade-in transition
+                setTimeout(() => {
+                    modal.style.opacity = "1";
+                    const modalContent = modal.querySelector("div");
+                    if (modalContent) modalContent.style.transform = "scale(1)";
+                }, 50);
+                
+                // Helper to close modal
+                const closeModal = () => {
+                    modal.style.opacity = "0";
+                    const modalContent = modal.querySelector("div");
+                    if (modalContent) modalContent.style.transform = "scale(0.9)";
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        // Clean up URL parameters so modal doesn't pop up again on refresh
+                        const newUrl = window.location.pathname;
+                        window.history.replaceState({}, document.title, newUrl);
+                    }, 400);
+                };
+                
+                if (closeBtn) closeBtn.addEventListener("click", closeModal);
+                if (closeActionBtn) closeActionBtn.addEventListener("click", closeModal);
+                
+                // Close on click outside modal content
+                modal.addEventListener("click", (e) => {
+                    if (e.target === modal) closeModal();
+                });
+            }
+        }
+    }
+    
     // Run initial configuration update
     updateCheckoutView();
+    checkStripePaymentSuccess();
 }
 
 /**
