@@ -748,6 +748,29 @@ function initCheckoutWidget() {
     
     if (nextBtn2) {
         nextBtn2.addEventListener("click", () => {
+            // Save details to localStorage for post-payment success page access
+            if (fullnameInput && emailInput && phoneInput) {
+                localStorage.setItem("yogam_user_name", fullnameInput.value.trim());
+                localStorage.setItem("yogam_user_email", emailInput.value.trim());
+                localStorage.setItem("yogam_user_phone", phoneInput.value.trim());
+                localStorage.setItem("yogam_selected_product", selectedProduct);
+                const startStr = currentWorkshop ? currentWorkshop.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "";
+                localStorage.setItem("yogam_selected_start", startStr);
+                
+                // Compile dynamic WhatsApp welcome chat template
+                const nameVal = fullnameInput.value.trim();
+                const productText = selectedProduct === "program" 
+                    ? `21-day Online Workshop (starts ${startStr})` 
+                    : "Individual Yoga Session";
+                const greeting = nameVal ? `Hi Durga, my name is ${nameVal}.` : "Hi Durga,";
+                const msg = `${greeting} I have completed my payment for the ${productText}. Please onboard me to the workshop!`;
+                const encodedMsg = encodeURIComponent(msg);
+                const welcomeLink = document.getElementById("whatsapp-welcome-chat");
+                if (welcomeLink) {
+                    welcomeLink.setAttribute("href", `https://wa.me/18045168515?text=${encodedMsg}`);
+                }
+            }
+            
             if (step3) {
                 step3.classList.remove("disabled-step");
                 const targetOffset = getAbsoluteOffset(step3);
