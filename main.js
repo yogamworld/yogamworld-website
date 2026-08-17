@@ -47,7 +47,7 @@ const WORKSHOP_CONFIG = {
     PROMO_CODES: {
         "YOGA10": { type: "percentage", value: 10 },
         "YOGAM20": { type: "fixed", value: 20 },
-        "EARLYBIRD": { type: "fixed", value: 15 }
+        "EARLYBIRD": { type: "percentage", value: 90 }
     }
 };
 
