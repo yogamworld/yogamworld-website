@@ -1861,6 +1861,11 @@ img {
     .hero-container {
         padding-top: 20px !important;
         padding-bottom: 90px !important;
+        z-index: 4 !important;
+    }
+    
+    .section-divider-curve svg {
+        height: 35px !important;
     }
 
     /* About Section spacing */
