@@ -1842,11 +1842,31 @@ img {
 @media (max-width: 768px) {
     /* Base */
     .section-padding {
-        padding: 70px 0;
+        padding: 45px 0 !important;
+    }
+    
+    .container {
+        padding: 0 16px;
     }
     
     .section-title {
         font-size: 2rem;
+    }
+
+    /* Hero tightening */
+    .hero-section {
+        min-height: auto !important;
+        padding-top: 100px !important;
+    }
+    .hero-container {
+        padding-top: 20px !important;
+        padding-bottom: 50px !important;
+    }
+
+    /* About Section spacing */
+    .about-grid {
+        gap: 20px !important;
+        margin-bottom: 24px !important;
     }
     
     /* Calendar Mobile tweaks */
@@ -1946,6 +1966,10 @@ img {
     }
     
     /* Testimonial slider */
+    .testimonial-slider {
+        min-height: 260px !important;
+    }
+    
     .testimonial-card {
         padding: 40px 24px 30px 24px;
     }
@@ -1961,13 +1985,17 @@ img {
         margin-bottom: 20px;
     }
     
+    .slider-controls {
+        margin-top: 15px !important;
+    }
+    
     /* Registration wrapper */
     .registration-wrapper {
-        padding: 40px 20px;
+        padding: 30px 15px;
     }
 
     .checkout-step {
-        padding: 30px 20px;
+        padding: 24px 15px;
     }
 
     .selection-grid {
@@ -2281,6 +2309,55 @@ img {
         gap: 24px;
     }
     .upcoming-batches-img-wrapper {
-        min-height: 240px;
+        min-height: 200px;
+    }
+}
+
+/* Extra Mobile Optimizations to remove empty space and expand gutters */
+@media (max-width: 480px) {
+    .section-padding {
+        padding: 35px 0 !important;
+    }
+    
+    .container {
+        padding: 0 12px !important;
+    }
+    
+    .registration-wrapper {
+        padding: 20px 10px !important;
+        margin-bottom: 24px !important;
+    }
+    
+    .checkout-step {
+        padding: 20px 12px !important;
+    }
+    
+    .select-box {
+        padding: 16px !important;
+        gap: 8px !important;
+    }
+    
+    .step-title {
+        font-size: 1.25rem !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .step-num {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.95rem !important;
+        line-height: 32px !important;
+    }
+    
+    .upcoming-batches-img-wrapper {
+        min-height: 180px !important;
+    }
+    
+    .testimonial-slider {
+        min-height: 220px !important;
+    }
+    
+    .slider-controls {
+        margin-top: 10px !important;
     }
 }
