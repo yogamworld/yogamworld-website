@@ -815,10 +815,10 @@ img {
 
 .testimonial-text strong {
     color: var(--color-sage-dark);
-    font-weight: 600;
-    background-color: rgba(122, 154, 130, 0.08);
-    padding: 1px 4px;
-    border-radius: 3px;
+    font-weight: 700;
+    background-color: rgba(122, 154, 130, 0.16);
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
 .student-profile {
