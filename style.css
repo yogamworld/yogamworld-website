@@ -802,14 +802,23 @@ img {
 }
 
 .testimonial-text {
-    font-size: 1.15rem;
-    font-family: var(--font-heading);
-    font-style: italic;
+    font-size: 1.05rem;
+    font-family: var(--font-body);
+    font-style: normal;
+    font-weight: 400;
     color: var(--color-text-dark);
-    line-height: 1.7;
+    line-height: 1.75;
     margin-bottom: 30px;
     position: relative;
     z-index: 2;
+}
+
+.testimonial-text strong {
+    color: var(--color-sage-dark);
+    font-weight: 600;
+    background-color: rgba(122, 154, 130, 0.08);
+    padding: 1px 4px;
+    border-radius: 3px;
 }
 
 .student-profile {
