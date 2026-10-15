@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Style -->
-    <link rel="stylesheet" href="style.css?v=29.0">
+    <link rel="stylesheet" href="style.css?v=31.0">
 </head>
 <body>
 
@@ -248,14 +248,7 @@
                                     Enter your contact details below. Your booking confirmation details will be sent to our system, and you will complete your health registration later within the WhatsApp onboarding group.
                                 </p>
                             </div>
-                            
-                            <!-- Selected Summary Badge -->
-                            <div class="selected-summary-wrap" style="margin-bottom: 20px;">
-                                <div class="selected-date-badge" id="wizard-selected-summary">
-                                    <i class="fa-regular fa-calendar-check"></i>
-                                    <span id="wizard-selected-summary-text" style="font-weight: 600;">Selected: 21-day Online Workshop</span>
-                                </div>
-                            </div>
+
                             
                             <!-- Contact details inputs -->
                             <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 24px; max-width: 450px;">
@@ -264,12 +257,12 @@
                                     <input type="text" id="wizard-fullname" placeholder="John Doe" style="width: 100%; padding: 12px 16px; border: 2px solid var(--color-border); border-radius: var(--border-radius-sm); font-family: var(--font-body); font-size: 0.95rem;" required>
                                 </div>
                                 <div>
-                                    <label for="wizard-email" style="font-size: 0.9rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Email Address *</label>
-                                    <input type="email" id="wizard-email" placeholder="john@example.com" style="width: 100%; padding: 12px 16px; border: 2px solid var(--color-border); border-radius: var(--border-radius-sm); font-family: var(--font-body); font-size: 0.95rem;" required>
-                                </div>
-                                <div>
                                     <label for="wizard-phone" style="font-size: 0.9rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Phone / WhatsApp Number *</label>
                                     <input type="tel" id="wizard-phone" placeholder="+1 (123) 456-7890" style="width: 100%; padding: 12px 16px; border: 2px solid var(--color-border); border-radius: var(--border-radius-sm); font-family: var(--font-body); font-size: 0.95rem;" required>
+                                </div>
+                                <div>
+                                    <label for="wizard-email" style="font-size: 0.9rem; font-weight: 600; color: var(--color-text-dark); display: block; margin-bottom: 6px;">Email Address *</label>
+                                    <input type="email" id="wizard-email" placeholder="john@example.com" style="width: 100%; padding: 12px 16px; border: 2px solid var(--color-border); border-radius: var(--border-radius-sm); font-family: var(--font-body); font-size: 0.95rem;" required>
                                 </div>
                             </div>
                             
@@ -286,8 +279,54 @@
                             <h3 class="step-title">Secure Payment</h3>
                             <div class="step-instruction-box" style="margin-bottom: 20px;">
                                 <p style="font-size: 1rem; color: var(--color-text-dark); line-height: 1.6; margin: 0;">
-                                    Choose your preferred payment method below to complete booking.
+                                    Review your workshop details and choose your preferred payment method below to complete booking.
                                 </p>
+                            </div>
+                            
+                            <!-- Prominent Pre-Payment Workshop Overview & Order Review Card -->
+                            <div class="checkout-review-card" id="checkout-review-card">
+                                <div class="checkout-review-media">
+                                    <img src="assets/durga-devi-yoga-pose.jpg" alt="21-Day Yoga Workshop" class="checkout-review-img" id="review-card-img">
+                                </div>
+                                <div class="checkout-review-info">
+                                    <div class="checkout-review-header">
+                                        <div>
+                                            <span class="checkout-review-badge" id="review-card-badge"><i class="fa-solid fa-sparkles"></i> 21-Day Program</span>
+                                            <h4 class="checkout-review-title" id="review-card-title">21-Day Yoga Workshop</h4>
+                                            <p class="checkout-review-subtitle" id="review-card-subtitle">A Yogic Lifestyle Journey · Move, breathe, reflect, and grow.</p>
+                                        </div>
+                                        <div class="checkout-review-price-wrap">
+                                            <span class="checkout-review-price" id="review-card-price">$75.00</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="checkout-review-desc" id="review-card-desc">
+                                        A 21-day journey combining yogic wisdom, Patanjali Yoga Sutras, asanas, Surya Namaskar, pranayama, meditation, and simple lifestyle practices. Each day brings a new theme to help you connect body, breath, mind, and everyday life—creating a deeper and more meaningful yoga practice.
+                                    </p>
+
+                                    <div class="checkout-review-meta">
+                                        <span class="review-meta-pill pill-theme" id="review-card-theme">
+                                            <i class="fa-solid fa-leaf"></i> 21 Days • 21 Yogic Themes • One Journey Within 🌿
+                                        </span>
+                                        <span class="review-meta-pill pill-timing">
+                                            <i class="fa-regular fa-clock"></i> 5:45 AM – 6:30 AM EST (4:45 AM – 5:30 AM CST) · 45 mins
+                                        </span>
+                                        <span class="review-meta-pill pill-date" id="review-card-dates">
+                                            <i class="fa-regular fa-calendar-check"></i> Live Interactive on Zoom
+                                        </span>
+                                    </div>
+
+                                    <div class="checkout-review-total-bar">
+                                        <div class="review-total-row">
+                                            <span>Subtotal:</span>
+                                            <strong id="review-subtotal-val">$75.00</strong>
+                                        </div>
+                                        <div class="review-total-row final-total">
+                                            <span>Total Due:</span>
+                                            <strong class="total-amount" id="review-total-val">$75.00</strong>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="selection-grid select-payment-grid" style="margin-bottom: 24px;">
@@ -314,20 +353,18 @@
                             
                             <!-- Credit Card Checkout View -->
                             <div class="checkout-view active" id="view-card" style="border-top: 1px solid var(--color-border); padding-top: 20px;">
-                                <div class="summary-box">
-                                    <h4>Order Summary</h4>
-                                    <div class="summary-row">
-                                        <span id="card-summary-name">21-day Online Workshop</span>
-                                        <strong id="card-summary-price">$75</strong>
-                                    </div>
-                                </div>
                                 <div class="checkout-cta-wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-                                    <a href="#" class="btn btn-primary btn-large btn-stripe-link" id="checkout-card-btn">
-                                        Pay Securely via Card <i class="fa-solid fa-credit-card"></i>
+                                    <a href="#" class="btn btn-primary btn-large btn-stripe-link" id="checkout-card-btn" style="flex: 1; min-width: 260px; text-align: center;">
+                                        Pay Securely via Card ($75.00) <i class="fa-solid fa-credit-card"></i>
                                     </a>
                                     <button type="button" class="btn btn-secondary" id="wizard-next-3" style="padding: 12px 30px;">
                                         Next: Onboarding <i class="fa-solid fa-arrow-right"></i>
                                     </button>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 14px; font-size: 0.8rem; color: var(--color-text-muted);">
+                                    <span><i class="fa-solid fa-shield-halved" style="color: var(--color-sage);"></i> 256-Bit SSL Encrypted</span>
+                                    <span>•</span>
+                                    <span><i class="fa-brands fa-stripe" style="font-size: 1.3rem; vertical-align: middle;"></i> Secured by Stripe</span>
                                 </div>
                             </div>
                             
@@ -448,7 +485,7 @@
                             <span class="icon-toggle"><i class="fa-solid fa-plus"></i></span>
                         </button>
                         <div class="accordion-content">
-                            <p><strong>Yes! You can join from anywhere in the world.</strong> The program is conducted online, so you can participate from any location.<br><br>Live class timings may vary from batch to batch and will be shared with you after registration. If you're unable to attend a live session due to your time zone or schedule, <strong>recordings will be available</strong>, so you can practice at your convenience and stay on track with the program.</p>
+                            <p><strong>Yes! You can join from anywhere in the world.</strong> The program is conducted online, so you can participate from any location.<br><br>Live classes are held at <strong>5:45 AM – 6:30 AM EST (4:45 AM – 5:30 AM CST)</strong>, with each class running for <strong>45 minutes</strong>. If you're unable to attend a live session due to your time zone or schedule, <strong>recordings will be available</strong>, so you can practice at your convenience and stay on track with the program.</p>
                         </div>
                     </div>
                     
@@ -789,6 +826,6 @@
     </div>
 
     <!-- Core Script -->
-    <script src="main.js?v=19.0"></script>
+    <script src="main.js?v=23.0"></script>
 </body>
 </html>

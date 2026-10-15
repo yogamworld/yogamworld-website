@@ -2376,3 +2376,196 @@ img {
         margin-top: 10px !important;
     }
 }
+
+/* ==========================================================================
+   Pre-Payment Workshop Overview & Order Review Card
+   ========================================================================== */
+.checkout-review-card {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 24px;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+}
+
+.checkout-review-card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-sage-light);
+}
+
+.checkout-review-media {
+    flex-shrink: 0;
+    width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkout-review-img {
+    width: 100%;
+    height: 100%;
+    min-height: 210px;
+    max-height: 270px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.checkout-review-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.checkout-review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.checkout-review-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-sage-dark);
+    background-color: var(--color-sage-light);
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-bottom: 6px;
+}
+
+.checkout-review-title {
+    font-family: var(--font-heading);
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--color-text-dark);
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+}
+
+.checkout-review-subtitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-sage-dark);
+    margin: 0;
+}
+
+.checkout-review-price-wrap {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.checkout-review-price {
+    font-family: var(--font-heading);
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--color-sage-dark);
+}
+
+.checkout-review-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-text-dark);
+    margin: 0 0 16px 0;
+}
+
+.checkout-review-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.review-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: var(--color-sage-pale);
+    color: var(--color-text-dark);
+    border: 1px solid var(--color-border);
+}
+
+.review-meta-pill.pill-theme {
+    background-color: var(--color-lavender-pale);
+    color: var(--color-lavender);
+    border-color: var(--color-lavender-accent);
+}
+
+.checkout-review-total-bar {
+    background-color: var(--color-sage-pale);
+    border-radius: var(--border-radius-sm);
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed var(--color-border);
+}
+
+.review-total-row {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+
+.review-total-row strong {
+    font-size: 1.05rem;
+    color: var(--color-text-dark);
+}
+
+.review-total-row.final-total {
+    font-size: 1.05rem;
+    color: var(--color-text-dark);
+}
+
+.review-total-row.final-total strong.total-amount {
+    font-size: 1.45rem;
+    color: var(--color-sage-dark);
+    margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+    .checkout-review-card {
+        flex-direction: column;
+        padding: 18px;
+        gap: 16px;
+    }
+    
+    .checkout-review-media {
+        width: 100%;
+    }
+    
+    .checkout-review-img {
+        max-height: 200px;
+        width: 100%;
+    }
+    
+    .checkout-review-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .checkout-review-price-wrap {
+        text-align: left;
+    }
+    
+    .checkout-review-total-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
