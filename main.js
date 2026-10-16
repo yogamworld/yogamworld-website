@@ -618,37 +618,41 @@ function initCheckoutWidget() {
         const reviewTitle = document.getElementById("review-card-title");
         const reviewSubtitle = document.getElementById("review-card-subtitle");
         const reviewDesc = document.getElementById("review-card-desc");
-        const reviewTheme = document.getElementById("review-card-theme");
         const reviewBadge = document.getElementById("review-card-badge");
         const reviewDates = document.getElementById("review-card-dates");
+        const reviewTimings = document.getElementById("review-card-timings");
+        const reviewFormat = document.getElementById("review-card-format");
         const reviewPrice = document.getElementById("review-card-price");
-        const reviewSubtotal = document.getElementById("review-subtotal-val");
+        const reviewPeriod = document.getElementById("review-card-period");
         const reviewTotal = document.getElementById("review-total-val");
 
-        if (reviewPrice) reviewPrice.textContent = `$${selectedPrice}.00`;
-        if (reviewSubtotal) reviewSubtotal.textContent = `$${selectedPrice}.00`;
+        if (reviewPrice) reviewPrice.textContent = `$${selectedPrice}`;
         if (reviewTotal) reviewTotal.textContent = `$${selectedPrice}.00`;
 
         if (selectedProduct === "program") {
-            if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-sparkles"></i> 21-Day Program`;
+            if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-sparkles"></i> 21-Day Journey`;
             if (reviewTitle) reviewTitle.textContent = "21-Day Yoga Workshop";
             if (reviewSubtitle) reviewSubtitle.textContent = "A Yogic Lifestyle Journey · Move, breathe, reflect, and grow.";
-            if (reviewDesc) reviewDesc.textContent = "A 21-day journey combining yogic wisdom, Patanjali Yoga Sutras, asanas, Surya Namaskar, pranayama, meditation, and simple lifestyle practices. Each day brings a new theme to help you connect body, breath, mind, and everyday life—creating a deeper and more meaningful yoga practice.";
-            if (reviewTheme) reviewTheme.innerHTML = `<i class="fa-solid fa-leaf"></i> 21 Days • 21 Yogic Themes • One Journey Within 🌿`;
+            if (reviewDesc) reviewDesc.textContent = "A 21-day journey combining yogic wisdom, Patanjali Yoga Sutras, asanas, Surya Namaskar, pranayama, meditation, and simple lifestyle practices. Each day brings a new theme to connect body, breath, mind, and everyday life.";
+            if (reviewPeriod) reviewPeriod.textContent = "/ full program";
             if (reviewDates) {
                 const rangeStr = currentWorkshop ? formatDateRange(currentWorkshop.startDate, currentWorkshop.endDate) : "Upcoming Batch";
-                reviewDates.innerHTML = `<i class="fa-regular fa-calendar-check"></i> ${rangeStr}`;
+                reviewDates.textContent = rangeStr;
             }
+            if (reviewTimings) reviewTimings.textContent = "5:45 AM – 6:30 AM EST (4:45 AM – 5:30 AM CST)";
+            if (reviewFormat) reviewFormat.textContent = "45 Mins Daily · Live on Zoom";
         } else {
-            if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-ticket"></i> Single Session`;
+            if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-calendar-day"></i> 1-Day Pass`;
             if (reviewTitle) reviewTitle.textContent = "Individual Yoga Session";
-            if (reviewSubtitle) reviewSubtitle.textContent = "Single Drop-in Live Class · Practice at your own pace";
-            if (reviewDesc) reviewDesc.textContent = "Single drop-in session access. Attend a live 45-minute interactive class featuring gentle yoga, breathwork (pranayama), and meditation with direct posture alignment from Durga Devi.";
-            if (reviewTheme) reviewTheme.innerHTML = `<i class="fa-solid fa-person-praying"></i> Single Drop-In · 45-Minute Live Guidance`;
+            if (reviewSubtitle) reviewSubtitle.textContent = "Live Interactive Practice · Learn at your own pace";
+            if (reviewDesc) reviewDesc.textContent = "Join Durga Devi for a live morning session blending gentle asanas, pranayama (breathwork), and guided meditation with personal posture adjustments and real-time guidance.";
+            if (reviewPeriod) reviewPeriod.textContent = "/ single session";
             if (reviewDates) {
                 const dateStr = window.selectedDate ? formatDateFriendly(window.selectedDate) : "Select a date in Step 1";
-                reviewDates.innerHTML = `<i class="fa-regular fa-calendar-check"></i> ${dateStr}`;
+                reviewDates.textContent = dateStr;
             }
+            if (reviewTimings) reviewTimings.textContent = "5:45 AM – 6:30 AM EST (4:45 AM – 5:30 AM CST)";
+            if (reviewFormat) reviewFormat.textContent = "45 Mins · Live on Zoom";
         }
 
         // Update Stripe Payment Link & state of CTA Button
