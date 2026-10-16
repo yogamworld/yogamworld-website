@@ -631,28 +631,40 @@ function initCheckoutWidget() {
 
         if (selectedProduct === "program") {
             if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-sparkles"></i> 21-Day Journey`;
-            if (reviewTitle) reviewTitle.textContent = "21-Day Yoga Workshop";
-            if (reviewSubtitle) reviewSubtitle.textContent = "A Yogic Lifestyle Journey · Move, breathe, reflect, and grow.";
-            if (reviewDesc) reviewDesc.textContent = "A 21-day journey combining yogic wisdom, Patanjali Yoga Sutras, asanas, Surya Namaskar, pranayama, meditation, and simple lifestyle practices. Each day brings a new theme to connect body, breath, mind, and everyday life.";
+            if (reviewTitle) reviewTitle.textContent = "21-Day Journey";
+            if (reviewSubtitle) {
+                reviewSubtitle.innerHTML = `A Yogic Lifestyle Journey<span class="sub-line2">Move, Breathe, Reflect, and Grow</span>`;
+            }
+            if (reviewDesc) {
+                reviewDesc.textContent = "A transformative 21-day program to build strength, stamina, and flexibility while cultivating deep peace of mind. Master guided relaxation techniques, Patanjali Yoga Sutras, mindful breathwork, and meditation in daily 45-minute interactive live sessions with Durga Devi.";
+            }
             if (reviewPeriod) reviewPeriod.textContent = "/ full program";
             if (reviewDates) {
                 const rangeStr = currentWorkshop ? formatDateRange(currentWorkshop.startDate, currentWorkshop.endDate) : "Upcoming Batch";
                 reviewDates.textContent = rangeStr;
             }
-            if (reviewTimings) reviewTimings.textContent = "5:45 AM – 6:30 AM EST (4:45 AM – 5:30 AM CST)";
-            if (reviewFormat) reviewFormat.textContent = "45 Mins Daily · Live on Zoom";
+            if (reviewTimings) {
+                reviewTimings.innerHTML = `5:45 AM – 6:30 AM EST <span class="timing-alt">(4:45 AM – 5:30 AM CST)</span>`;
+            }
+            if (reviewFormat) reviewFormat.textContent = "45 Minutes Daily · Live on Zoom";
         } else {
             if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-calendar-day"></i> 1-Day Pass`;
             if (reviewTitle) reviewTitle.textContent = "Individual Yoga Session";
-            if (reviewSubtitle) reviewSubtitle.textContent = "Live Interactive Practice · Learn at your own pace";
-            if (reviewDesc) reviewDesc.textContent = "Join Durga Devi for a live morning session blending gentle asanas, pranayama (breathwork), and guided meditation with personal posture adjustments and real-time guidance.";
+            if (reviewSubtitle) {
+                reviewSubtitle.innerHTML = `Live Interactive Practice<span class="sub-line2">Learn, Align, and Deepen at Your Own Pace</span>`;
+            }
+            if (reviewDesc) {
+                reviewDesc.textContent = "A personalized 45-minute live morning session to build strength, flexibility, and peace of mind. Enjoy gentle asanas, breathwork (pranayama), and deep relaxation techniques with direct posture alignment from Durga Devi.";
+            }
             if (reviewPeriod) reviewPeriod.textContent = "/ single session";
             if (reviewDates) {
                 const dateStr = window.selectedDate ? formatDateFriendly(window.selectedDate) : "Select a date in Step 1";
                 reviewDates.textContent = dateStr;
             }
-            if (reviewTimings) reviewTimings.textContent = "5:45 AM – 6:30 AM EST (4:45 AM – 5:30 AM CST)";
-            if (reviewFormat) reviewFormat.textContent = "45 Mins · Live on Zoom";
+            if (reviewTimings) {
+                reviewTimings.innerHTML = `5:45 AM – 6:30 AM EST <span class="timing-alt">(4:45 AM – 5:30 AM CST)</span>`;
+            }
+            if (reviewFormat) reviewFormat.textContent = "45 Minutes · Live on Zoom";
         }
 
         // Update Stripe Payment Link & state of CTA Button

@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Style -->
-    <link rel="stylesheet" href="style.css?v=32.0">
+    <link rel="stylesheet" href="style.css?v=33.0">
 </head>
 <body>
 
@@ -285,49 +285,54 @@
                             
                             <!-- Prominent Pre-Payment Workshop Overview & Order Review Card -->
                             <div class="checkout-review-card" id="checkout-review-card">
-                                <div class="checkout-review-media">
-                                    <img src="assets/durga-devi-yoga-pose.jpg" alt="Yoga Practice with Durga Devi" class="checkout-review-img" id="review-card-img">
+                                <div class="checkout-review-main">
+                                    <div class="checkout-review-media">
+                                        <img src="assets/durga-devi-yoga-pose.jpg?v=3" alt="Yoga Practice with Durga Devi" class="checkout-review-img" id="review-card-img">
+                                    </div>
+                                    <div class="checkout-review-info">
+                                        <div class="checkout-review-header">
+                                            <div>
+                                                <span class="checkout-review-badge" id="review-card-badge"><i class="fa-solid fa-sparkles"></i> 21-Day Journey</span>
+                                                <h4 class="checkout-review-title" id="review-card-title">21-Day Journey</h4>
+                                                <p class="checkout-review-subtitle" id="review-card-subtitle">
+                                                    A Yogic Lifestyle Journey
+                                                    <span class="sub-line2">Move, Breathe, Reflect, and Grow</span>
+                                                </p>
+                                            </div>
+                                            <div class="checkout-review-price-wrap">
+                                                <span class="checkout-review-price" id="review-card-price">$75</span>
+                                                <span class="checkout-review-period" id="review-card-period">/ full program</span>
+                                            </div>
+                                        </div>
+
+                                        <p class="checkout-review-desc" id="review-card-desc">
+                                            A transformative 21-day program to build strength, stamina, and flexibility while cultivating deep peace of mind. Master guided relaxation techniques, Patanjali Yoga Sutras, mindful breathwork, and meditation in daily 45-minute interactive live sessions with Durga Devi.
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="checkout-review-info">
-                                    <div class="checkout-review-header">
-                                        <div>
-                                            <span class="checkout-review-badge" id="review-card-badge"><i class="fa-solid fa-sparkles"></i> 21-Day Journey</span>
-                                            <h4 class="checkout-review-title" id="review-card-title">21-Day Yoga Workshop</h4>
-                                            <p class="checkout-review-subtitle" id="review-card-subtitle">A Yogic Lifestyle Journey · Move, breathe, reflect, and grow.</p>
-                                        </div>
-                                        <div class="checkout-review-price-wrap">
-                                            <span class="checkout-review-price" id="review-card-price">$75</span>
-                                            <span class="checkout-review-period" id="review-card-period">/ full program</span>
-                                        </div>
+
+                                <!-- Structured details: Day, Timing, Format -->
+                                <div class="checkout-review-details-grid">
+                                    <div class="review-detail-item">
+                                        <span class="detail-label"><i class="fa-regular fa-calendar-check" style="color: var(--color-sage);"></i> Date / Schedule</span>
+                                        <strong class="detail-val" id="review-card-dates">Upcoming Batch</strong>
                                     </div>
-
-                                    <p class="checkout-review-desc" id="review-card-desc">
-                                        A 21-day journey combining yogic wisdom, Patanjali Yoga Sutras, asanas, Surya Namaskar, pranayama, meditation, and simple lifestyle practices. Each day brings a new theme to connect body, breath, mind, and everyday life.
-                                    </p>
-
-                                    <!-- Structured details: Day, Timing, Format -->
-                                    <div class="checkout-review-details-grid">
-                                        <div class="review-detail-item">
-                                            <span class="detail-label"><i class="fa-regular fa-calendar-check" style="color: var(--color-sage);"></i> Date / Schedule</span>
-                                            <strong class="detail-val" id="review-card-dates">Upcoming Batch</strong>
-                                        </div>
-                                        <div class="review-detail-item">
-                                            <span class="detail-label"><i class="fa-regular fa-clock" style="color: var(--color-sage);"></i> Class Timings</span>
-                                            <strong class="detail-val" id="review-card-timings">5:45 AM – 6:30 AM EST (4:45 AM – 5:30 AM CST)</strong>
-                                        </div>
-                                        <div class="review-detail-item">
-                                            <span class="detail-label"><i class="fa-solid fa-video" style="color: var(--color-sage);"></i> Duration & Format</span>
-                                            <strong class="detail-val" id="review-card-format">45 Mins · Live on Zoom</strong>
-                                        </div>
+                                    <div class="review-detail-item">
+                                        <span class="detail-label"><i class="fa-solid fa-video" style="color: var(--color-sage);"></i> Duration & Format</span>
+                                        <strong class="detail-val" id="review-card-format">45 Minutes Daily · Live on Zoom</strong>
                                     </div>
+                                    <div class="review-detail-item review-detail-timings">
+                                        <span class="detail-label"><i class="fa-regular fa-clock" style="color: var(--color-sage);"></i> Class Timings</span>
+                                        <strong class="detail-val" id="review-card-timings">5:45 AM – 6:30 AM EST <span class="timing-alt">(4:45 AM – 5:30 AM CST)</span></strong>
+                                    </div>
+                                </div>
 
-                                    <div class="checkout-review-total-bar">
-                                        <div class="review-total-label">
-                                            <span><i class="fa-solid fa-receipt" style="color: var(--color-sage); margin-right: 8px;"></i> Total Amount</span>
-                                        </div>
-                                        <div class="review-total-val-wrap">
-                                            <strong class="total-amount" id="review-total-val">$75.00</strong>
-                                        </div>
+                                <div class="checkout-review-total-bar">
+                                    <div class="review-total-label">
+                                        <span><i class="fa-solid fa-receipt" style="color: var(--color-sage); margin-right: 8px;"></i> Total Amount</span>
+                                    </div>
+                                    <div class="review-total-val-wrap">
+                                        <strong class="total-amount" id="review-total-val">$75.00</strong>
                                     </div>
                                 </div>
                             </div>
@@ -829,6 +834,6 @@
     </div>
 
     <!-- Core Script -->
-    <script src="main.js?v=24.0"></script>
+    <script src="main.js?v=25.0"></script>
 </body>
 </html>
