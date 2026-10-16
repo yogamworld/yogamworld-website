@@ -631,7 +631,7 @@ function initCheckoutWidget() {
 
         if (selectedProduct === "program") {
             if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-sparkles"></i> 21-Day Journey`;
-            if (reviewTitle) reviewTitle.textContent = "21-Day Journey";
+            if (reviewTitle) reviewTitle.textContent = "21-Day Online Yoga Workshop";
             if (reviewSubtitle) {
                 reviewSubtitle.innerHTML = `A Yogic Lifestyle Journey<span class="sub-line2">Move, Breathe, Reflect, and Grow</span>`;
             }
