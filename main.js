@@ -618,7 +618,6 @@ function initCheckoutWidget() {
         const reviewTitle = document.getElementById("review-card-title");
         const reviewSubtitle = document.getElementById("review-card-subtitle");
         const reviewDesc = document.getElementById("review-card-desc");
-        const reviewBadge = document.getElementById("review-card-badge");
         const reviewDates = document.getElementById("review-card-dates");
         const reviewTimings = document.getElementById("review-card-timings");
         const reviewFormat = document.getElementById("review-card-format");
@@ -630,7 +629,6 @@ function initCheckoutWidget() {
         if (reviewTotal) reviewTotal.textContent = `$${selectedPrice}.00`;
 
         if (selectedProduct === "program") {
-            if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-sparkles"></i> 21-Day Journey`;
             if (reviewTitle) reviewTitle.textContent = "21-Day Online Yoga Workshop";
             if (reviewSubtitle) {
                 reviewSubtitle.innerHTML = `A Yogic Lifestyle Journey<span class="sub-line2">Move, Breathe, Reflect, and Grow</span>`;
@@ -648,7 +646,6 @@ function initCheckoutWidget() {
             }
             if (reviewFormat) reviewFormat.textContent = "45 Minutes Daily · Live on Zoom";
         } else {
-            if (reviewBadge) reviewBadge.innerHTML = `<i class="fa-solid fa-calendar-day"></i> 1-Day Pass`;
             if (reviewTitle) reviewTitle.textContent = "Individual Yoga Session";
             if (reviewSubtitle) {
                 reviewSubtitle.innerHTML = `Live Interactive Practice<span class="sub-line2">Learn, Align, and Deepen at Your Own Pace</span>`;
